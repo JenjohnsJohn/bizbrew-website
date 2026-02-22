@@ -102,27 +102,26 @@ export default function ProjectDetail() {
             </span>
           </div>
         </FadeIn>
+      </section>
 
-        <FadeIn>
-          <div className="w-full aspect-[16/10] rounded-frame overflow-hidden">
+      {/* About + Image side by side */}
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <div>
+            <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
+              About This Project
+            </h2>
+            <p className="text-bizbrew-text-secondary leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+          <div className="aspect-[4/3] rounded-frame overflow-hidden">
             <ImageWithFallback
               src={project.image}
               alt={project.name}
               className="w-full h-full object-cover"
             />
           </div>
-        </FadeIn>
-      </section>
-
-      {/* Description */}
-      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
-        <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
-          About This Project
-        </h2>
-        <div className="max-w-3xl">
-          <p className="text-bizbrew-text-secondary leading-relaxed">
-            {project.description}
-          </p>
         </div>
       </FadeIn>
 
