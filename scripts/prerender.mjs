@@ -8,7 +8,7 @@ import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, '..', 'dist');
-const SITE_URL = 'https://bizbrew.com';
+const SITE_URL = 'https://bizbrew.de';
 
 const routes = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },

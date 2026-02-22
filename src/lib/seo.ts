@@ -2,7 +2,7 @@
  * SEO configuration and utilities.
  * Update SITE_URL when deploying to your production domain.
  */
-export const SITE_URL = 'https://bizbrew.com';
+export const SITE_URL = 'https://bizbrew.de';
 export const SITE_NAME = 'BizBrew';
 export const DEFAULT_DESCRIPTION =
   'Custom software, SaaS products, web and mobile apps. We build solutions that fit your workflows and scale with your business.';

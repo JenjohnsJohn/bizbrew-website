@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bizbrew.com/</loc>
+    <loc>https://bizbrew.de/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/custom-software</loc>
+    <loc>https://bizbrew.de/services/custom-software</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/saas-products</loc>
+    <loc>https://bizbrew.de/services/saas-products</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/web-applications</loc>
+    <loc>https://bizbrew.de/services/web-applications</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/mobile-apps</loc>
+    <loc>https://bizbrew.de/services/mobile-apps</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/cloud-apis</loc>
+    <loc>https://bizbrew.de/services/cloud-apis</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bizbrew.com/services/architecture-consulting</loc>
+    <loc>https://bizbrew.de/services/architecture-consulting</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
