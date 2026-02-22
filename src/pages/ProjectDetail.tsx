@@ -125,10 +125,10 @@ export default function ProjectDetail() {
         </div>
       </FadeIn>
 
-      {/* Highlights */}
+      {/* Key Features */}
       <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
-          Key Contributions
+          Key Features
         </h2>
         <div className="max-w-3xl">
           <ul className="space-y-4">

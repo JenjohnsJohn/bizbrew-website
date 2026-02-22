@@ -66,10 +66,10 @@ export const projects: Project[] = [
     client: 'Neyyar Technologies',
     status: 'Completed',
     highlights: [
-      'Microservice architecture on Azure supporting independent scaling per feature',
-      'White-label system allowing branded deployments without code duplication',
-      'Multi-format content delivery: live, video, audio, and document-based learning',
-      'Clean Architecture with BLoC pattern ensuring maintainable, testable mobile code',
+      'Scalable microservice backend on Azure with independent feature scaling',
+      'White-label deployments for branded institutional versions',
+      'Multi-format learning: live, video, audio, and document-based content',
+      'Study plans and webinars alongside structured mock and live tests',
     ],
   },
   {
@@ -86,10 +86,10 @@ export const projects: Project[] = [
     client: 'Neyyar Technologies',
     status: 'In Development',
     highlights: [
-      'Microservice architecture separating content, auth, and streaming concerns',
-      'Adaptive bitrate streaming for smooth playback across network conditions',
-      'Cross-platform Flutter apps with shared business logic',
-      'Admin dashboard for content lifecycle and subscriber management',
+      'Microservice-based streaming with separated content, auth, and delivery',
+      'Adaptive bitrate playback adjusting to network conditions',
+      'Cross-platform apps for iOS, Android, and web from one codebase',
+      'Admin panel for content lifecycle, analytics, and subscriber management',
     ],
   },
   {
@@ -106,10 +106,10 @@ export const projects: Project[] = [
     client: 'Neyyar Technologies',
     status: 'In Development',
     highlights: [
-      'Riverpod-based state management for reactive, maintainable mobile code',
-      'Full payroll engine with configurable compliance rules',
-      'Integrated project management module with task-level tracking',
-      'Self-service employee portal reducing HR administrative overhead',
+      'Full payroll engine with configurable compliance and tax rules',
+      'Integrated project management with task-level tracking',
+      'Self-service employee portal for profiles, leave, and payslips',
+      'Shift and roster scheduling with department-level management',
     ],
   },
   {
@@ -126,10 +126,10 @@ export const projects: Project[] = [
     client: 'Multiple clients — Qatar / Middle East',
     status: 'Production',
     highlights: [
-      'White-label architecture serving multiple brands from a single codebase',
-      'Six years in production across the Middle East market',
-      'Unified API layer ensuring consistent mobile and web experiences',
-      'Modular design allowing per-client customization without forking',
+      'White-label theming for per-brand storefronts from one codebase',
+      'Unified product catalog, cart, and checkout across mobile and web',
+      'Real-time inventory sync and push notifications via Firebase',
+      'Modular storefront, cart engine, and order management layers',
     ],
   },
   {
@@ -146,10 +146,10 @@ export const projects: Project[] = [
     client: 'Multiple schools',
     status: 'Production',
     highlights: [
-      'White-label system deployed across multiple educational institutions',
-      'Complete administrative lifecycle from enrollment to graduation',
-      'Automated grade calculations and parent notification workflows',
-      'Modular design letting schools enable only the features they need',
+      'White-label system with per-school branding and module selection',
+      'Automated grade calculations with exam and results management',
+      'Parent notification system for attendance, grades, and announcements',
+      'Integrated fee collection with payment tracking and reminders',
     ],
   },
   {
@@ -166,9 +166,9 @@ export const projects: Project[] = [
     client: 'Hospitals & clinics',
     status: 'Production',
     highlights: [
-      'Unified platform covering clinical and administrative workflows',
-      'Role-based access controls appropriate for healthcare data sensitivity',
-      'Mobile access for staff to patient information and scheduling',
+      'Unified patient records, appointments, and billing in one platform',
+      'Role-based access controls with healthcare-grade data privacy',
+      'Mobile staff access to patient information and doctor schedules',
       'Audit logging for compliance and operational transparency',
     ],
   },
@@ -186,10 +186,10 @@ export const projects: Project[] = [
     client: 'Retail & service businesses',
     status: 'Production',
     highlights: [
-      'Production-grade POS handling real transaction volumes daily',
       'Configurable tax rules for different business types and jurisdictions',
-      'Offline-capable architecture for unreliable connectivity environments',
-      'Cross-device support from tablets in-store to phones on the go',
+      'Offline-capable POS working without reliable internet',
+      'Multi-device support across tablets and phones for in-store use',
+      'Detailed sales reports with analytics and financial summaries',
     ],
   },
   {
@@ -206,10 +206,10 @@ export const projects: Project[] = [
     client: 'Car rental companies',
     status: 'Production',
     highlights: [
-      'Complete rental lifecycle from fleet management to contract generation',
-      'Booking engine with conflict resolution and pricing rules',
+      'End-to-end rental lifecycle: fleet inventory, booking, and contracts',
+      'Smart booking engine with conflict resolution and pricing rules',
       'Vehicle utilization tracking and maintenance scheduling',
-      'Customer-facing mobile app with real-time availability',
+      'Real-time availability for customer-facing mobile bookings',
     ],
   },
   {
@@ -226,10 +226,10 @@ export const projects: Project[] = [
     client: 'Gyms & fitness centers',
     status: 'Production',
     highlights: [
-      'Full membership lifecycle from onboarding to renewal',
-      'Self-service member portal reducing front-desk overhead',
-      'Subscription management with plan flexibility and payment tracking',
-      'Analytics dashboard for data-driven business decisions',
+      'Full membership lifecycle from onboarding to plan renewal',
+      'Self-service member portal for schedules and subscriptions',
+      'Flexible plan management with automated payment tracking',
+      'Owner analytics dashboard with revenue and membership insights',
     ],
   },
   {
@@ -247,9 +247,9 @@ export const projects: Project[] = [
     status: 'Completed',
     highlights: [
       'Multiple check-in methods: GPS geofencing, QR codes, and biometric',
-      'Deployed across multiple enterprise clients with custom policies',
-      'Project-wise timesheets enabling accurate labor cost allocation',
-      'Compliance-ready attendance reporting and audit trails',
+      'Project-wise timesheets for accurate labor cost allocation',
+      'Configurable attendance policies and approval workflows',
+      'Compliance-ready reporting with full audit trails',
     ],
   },
   {
@@ -266,10 +266,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'End-to-end e-commerce flow from browsing to delivery tracking',
+      'End-to-end shopping flow from browsing to delivery tracking',
       'Real-time order status updates via push notifications',
-      'Optimized for the Qatar market with local payment and delivery patterns',
-      'Scalable backend handling inventory sync and order routing',
+      'Inventory sync with automated stock management',
+      'Search and filtering optimized for product discovery',
     ],
   },
   {
@@ -286,10 +286,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Multi-vendor marketplace with independent catalog management',
-      'Unified shopping experience across multiple sellers',
-      'Scalable architecture for onboarding new vendors',
-      'Vendor-specific filtering and customer ratings',
+      'Multi-vendor marketplace with independent catalog management per seller',
+      'Unified cart and checkout across multiple vendors',
+      'Vendor ratings and filtering for buyer confidence',
+      'Scalable onboarding flow for adding new sellers',
     ],
   },
   {
@@ -306,10 +306,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Full-featured classifieds marketplace for the Qatar market',
-      'Real-time chat between buyers and sellers via Firebase',
+      'Real-time buyer-seller chat powered by Firebase',
       'Advanced search with category, location, and price filtering',
       'Multi-image listing creation with rich descriptions',
+      'Favorites system for saving and tracking interesting listings',
     ],
   },
   {
@@ -326,10 +326,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Specialized e-commerce flow optimized for perishable goods delivery',
-      'Scheduled delivery with time-window selection',
-      'Occasion-based product discovery and gift messaging',
-      'Coordination with local florists for fulfillment',
+      'Scheduled delivery with date and time-window selection',
+      'Occasion-based browsing for birthdays, weddings, and holidays',
+      'Custom arrangement builder with gift messaging',
+      'Perishable-goods logistics with freshness guarantees',
     ],
   },
   {
@@ -346,10 +346,10 @@ export const projects: Project[] = [
     client: 'Bab Al Rayyan Group — Qatar',
     status: 'Completed',
     highlights: [
-      'Multi-brand platform serving diverse business verticals',
-      'Combined e-commerce and restaurant ordering under one system',
-      'Unified analytics and customer management across brands',
-      'Independent inventory and pricing per business unit',
+      'Multi-brand platform combining e-commerce and restaurant ordering',
+      'Unified customer accounts and analytics across business units',
+      'Independent inventory and pricing per brand',
+      'Cross-brand management dashboard for operational oversight',
     ],
   },
   {
@@ -366,10 +366,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Visual-first product presentation for high-consideration purchases',
-      'Detailed specifications and dimension information for furniture',
-      'Category organization by room, style, and price range',
-      'Delivery scheduling with assembly options',
+      'High-resolution product photography with zoom and gallery views',
+      'Detailed specifications including dimensions and materials',
+      'Category browsing by room, style, and price range',
+      'Delivery scheduling with optional assembly services',
     ],
   },
   {
@@ -386,10 +386,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Multi-store aggregation with independent vendor management',
-      'Unified shopping experience across diverse retailers',
+      'Multi-store aggregation with independent vendor inventories',
+      'Unified browsing and cart across diverse retailers',
       'Per-vendor pricing, promotions, and delivery options',
-      'Cross-store product discovery and search',
+      'Cross-store search and product discovery',
     ],
   },
   {
@@ -406,10 +406,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Specialized for high-value jewellery transactions',
-      'Detailed product specifications including karat and weight',
-      'Secure checkout flow appropriate for high-value purchases',
-      'Category-based browsing with karat, weight, and price filters',
+      'Detailed product specs with karat, weight, and material info',
+      'Secure checkout flow designed for high-value transactions',
+      'Category browsing: rings, necklaces, bracelets, and more',
+      'Advanced filters by karat, weight, and price range',
     ],
   },
   {
@@ -426,10 +426,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Clean, intuitive e-commerce experience for everyday shopping',
-      'Streamlined checkout with saved customer preferences',
-      'Full order lifecycle from cart to delivery confirmation',
-      'Reliable mobile commerce for the Qatar market',
+      'Clean product browsing with category navigation and search',
+      'Streamlined checkout with saved addresses and payment methods',
+      'Full order tracking from confirmation through delivery',
+      'User accounts with order history and preferences',
     ],
   },
   {
@@ -446,10 +446,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Localized e-commerce experience for the Qatar market',
-      'Bilingual support (Arabic and English)',
-      'Integration with local payment methods and logistics',
+      'Bilingual interface supporting Arabic and English',
+      'Local payment methods and delivery address formatting',
       'Quick reorder flow for returning customers',
+      'Delivery tracking integrated with local logistics providers',
     ],
   },
   {
@@ -466,10 +466,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Sports facility booking with real-time availability',
-      'Event registration and tournament management',
-      'Scheduling engine with conflict resolution and capacity tracking',
-      'Personalized user profiles with booking history',
+      'Real-time facility availability for courts and fields',
+      'Event registration and tournament sign-ups',
+      'Scheduling engine with conflict resolution and capacity limits',
+      'User profiles with booking history and personalized recommendations',
     ],
   },
   {
@@ -486,10 +486,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Centralized sports event discovery and registration',
+      'Centralized event discovery with upcoming activities feed',
       'Participant management with capacity limits and waitlists',
-      'Push notification system for schedule and event updates',
-      'Mobile-first design for on-the-go sports booking',
+      'Push notifications for schedule changes and new events',
+      'One-tap registration with instant booking confirmation',
     ],
   },
   {
@@ -506,10 +506,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Coach discovery with detailed profiles and specialties',
-      'Flexible scheduling with recurring bookings and cancellation policies',
-      'Training history tracking for progress-informed coaching',
-      'Streamlined booking flow from discovery to confirmation',
+      'Coach profiles with qualifications, specialties, and availability',
+      'Recurring session bookings with cancellation and rescheduling',
+      'Training history and progress tracking across sessions',
+      'Slot management with real-time coach availability',
     ],
   },
   {
@@ -527,9 +527,9 @@ export const projects: Project[] = [
     status: 'Completed',
     highlights: [
       'Aggregated discovery of sports, fitness, and recreational events',
-      'Multi-criteria filtering by sport, location, skill, and schedule',
-      'Instant booking confirmation with calendar integration',
-      'Activity history for tracking fitness engagement',
+      'Multi-criteria filtering by sport, location, skill level, and schedule',
+      'Instant booking confirmation with calendar sync',
+      'Activity history tracking for fitness engagement',
     ],
   },
   {
@@ -546,10 +546,10 @@ export const projects: Project[] = [
     client: 'Qatar tourism sector',
     status: 'Completed',
     highlights: [
-      'Full tourism booking lifecycle from discovery to itinerary access',
-      'Rich visual package presentations with photos and reviews',
-      'Tour operator management portal for listings and availability',
-      'Mobile itinerary access for day-of travel convenience',
+      'Curated tour packages with photos, reviews, and descriptions',
+      'Full booking lifecycle from discovery to payment',
+      'Day-of mobile itinerary access with trip details',
+      'Tour operator portal for listings, availability, and pricing',
     ],
   },
   {
@@ -567,9 +567,9 @@ export const projects: Project[] = [
     status: 'Completed',
     highlights: [
       'Real-time table availability across Qatar restaurants',
-      'Restaurant discovery by cuisine, location, and availability',
-      'Automated confirmation and reminder notifications',
-      'Restaurant-side management for table inventory and capacity',
+      'Restaurant discovery by cuisine, location, and party size',
+      'Automated booking confirmations and reminder notifications',
+      'Restaurant-side table inventory and capacity management',
     ],
   },
   {
@@ -586,10 +586,10 @@ export const projects: Project[] = [
     client: 'Salwa Beach Hilton',
     status: 'Completed',
     highlights: [
-      'Branded hospitality app for a major resort property',
-      'Digital menu and in-venue ordering reducing wait times',
-      'Integration with resort hospitality and kitchen systems',
-      'Multi-venue support across resort dining locations',
+      'Digital menu browsing with full dish details and photos',
+      'In-venue ordering directly from guest phones',
+      'Table reservations across multiple resort dining venues',
+      'Order routing integrated with kitchen and service systems',
     ],
   },
   {
@@ -606,10 +606,10 @@ export const projects: Project[] = [
     client: 'SECC',
     status: 'Completed',
     highlights: [
-      'Digitized HR workflows replacing manual attendance and leave processes',
-      'Mobile self-service reducing administrative overhead',
-      'Manager approval workflows for leave and attendance exceptions',
-      'Focused feature set designed for high workforce adoption',
+      'Mobile self-service for profiles, attendance, and leave requests',
+      'Manager approval workflows for leave and exceptions',
+      'Digital attendance logging replacing manual processes',
+      'Basic HR reporting and team oversight dashboards',
     ],
   },
   {
@@ -626,10 +626,10 @@ export const projects: Project[] = [
     client: 'Al Khor Sports Club',
     status: 'Completed',
     highlights: [
-      'Tailored HR solution for sports club operations',
-      'Multi-facility attendance tracking for distributed staff',
+      'Multi-facility attendance tracking across sports club locations',
       'Digital leave request and approval workflows',
-      'Reliable attendance logging across varied work schedules',
+      'Staff profiles with schedule and role management',
+      'Reliable check-in logging across varied work schedules',
     ],
   },
   {
@@ -646,10 +646,10 @@ export const projects: Project[] = [
     client: 'Clubs & organizations',
     status: 'Completed',
     highlights: [
-      'Role-based access adapting to different organizational structures',
-      'Appropriate data boundaries for sensitive employee information',
-      'Clean mobile interface for high adoption across staff levels',
-      'Flexible enough for diverse club and organization types',
+      'Role-based access adapting to different organizational levels',
+      'Data boundaries ensuring sensitive info is access-controlled',
+      'Employee profiles with attendance and HR workflow access',
+      'Flexible structure supporting diverse club and organization types',
     ],
   },
   {
@@ -666,10 +666,10 @@ export const projects: Project[] = [
     client: 'Alnoor',
     status: 'Completed',
     highlights: [
-      'Right-sized management tool without enterprise complexity',
-      'Mobile-first operational oversight for on-the-go management',
-      'Combined staff and operational data in one interface',
-      'Practical daily reporting for business operations',
+      'Staff management with profiles and attendance tracking',
+      'Daily operational reporting and management dashboard',
+      'Basic HR workflows for leave and scheduling',
+      'Mobile-first interface for on-the-go oversight',
     ],
   },
   {
@@ -686,10 +686,10 @@ export const projects: Project[] = [
     client: 'Education sector',
     status: 'Completed',
     highlights: [
-      'Structured content delivery with multi-media support',
-      'Quiz engine with immediate feedback and performance tracking',
+      'Multi-media content: text, images, and video lessons',
+      'Quiz engine with immediate feedback and scoring',
       'Student progress dashboards for learners and educators',
-      'Mobile-first learning accessible anytime, anywhere',
+      'Structured modules with completion tracking',
     ],
   },
   {
@@ -706,10 +706,10 @@ export const projects: Project[] = [
     client: 'Education — children\'s learning',
     status: 'Completed',
     highlights: [
-      'Kid-friendly UI designed for developing motor skills and attention spans',
-      'Gamified learning with achievements to maintain engagement',
+      'Kid-friendly UI with large touch targets and intuitive navigation',
+      'Gamified quizzes with achievement badges and rewards',
       'Parent and teacher dashboards for monitoring progress',
-      'Bite-sized modules optimized for children\'s learning patterns',
+      'Bite-sized lesson modules designed for children\'s attention spans',
     ],
   },
   {
@@ -726,10 +726,10 @@ export const projects: Project[] = [
     client: 'Education sector',
     status: 'Completed',
     highlights: [
-      'Structured learning paths with progressive difficulty',
+      'Structured learning paths with progressive difficulty levels',
       'Integrated assessments measuring comprehension and retention',
-      'Self-paced learning with cross-device progress sync',
-      'Multi-format content delivery for diverse learning styles',
+      'Self-paced progress with cross-device sync',
+      'Multi-format content supporting diverse learning styles',
     ],
   },
   {
@@ -746,10 +746,10 @@ export const projects: Project[] = [
     client: 'QGMD',
     status: 'Completed',
     highlights: [
-      'Real-time inventory tracking replacing manual stock processes',
-      'Barcode scanning for efficient stock counts and movements',
-      'Automated alerts for low-stock thresholds',
-      'Reporting on stock turnover, valuation, and movement patterns',
+      'Real-time stock level tracking with movement logging',
+      'Barcode scanning for fast stock counts and transfers',
+      'Automated low-stock alerts with configurable thresholds',
+      'Reports on stock turnover, valuation, and movement patterns',
     ],
   },
   {
@@ -766,10 +766,10 @@ export const projects: Project[] = [
     client: 'Moder Recycling Factory',
     status: 'Completed',
     highlights: [
-      'Streamlined appointment scheduling for recycling services',
+      'Time slot browsing with real-time availability',
       'Facility capacity management preventing overcrowding',
-      'Automated confirmations and reminder notifications',
-      'Simple booking flow accessible to all customer demographics',
+      'Automated booking confirmations and reminders',
+      'Simple self-service booking accessible to all users',
     ],
   },
   {
@@ -786,9 +786,9 @@ export const projects: Project[] = [
     client: 'Elite Recycling',
     status: 'Completed',
     highlights: [
-      'Self-service appointment booking reducing phone inquiries',
-      'Capacity-aware scheduling preventing facility overcrowding',
-      'Accessible interface for customers of all technical abilities',
+      'Self-service appointment booking with slot selection',
+      'Capacity-aware scheduling preventing overbooking',
+      'Accessible interface for all technical ability levels',
       'Automated reminders reducing no-show rates',
     ],
   },
@@ -806,10 +806,10 @@ export const projects: Project[] = [
     client: 'QBC',
     status: 'Completed',
     highlights: [
-      'Mobile-first booking flow replacing manual scheduling',
+      'Mobile-first booking with available time slot browsing',
       'Capacity-aware slot management aligned with staffing',
-      'Automated notification lifecycle from booking to completion',
-      'Conflict resolution ensuring no double-bookings',
+      'Automated notifications from confirmation to completion',
+      'Conflict resolution preventing double-bookings',
     ],
   },
   {
@@ -826,10 +826,10 @@ export const projects: Project[] = [
     client: 'Church community',
     status: 'Completed',
     highlights: [
-      'Purpose-built transport solution for community needs',
-      'Maps SDK integration for accurate location and routing',
-      'Driver matching based on availability and route proximity',
-      'Accessible design for diverse age groups and tech abilities',
+      'Ride booking with pickup and drop-off location selection',
+      'Map integration for accurate routing and location services',
+      'Driver matching based on availability and proximity',
+      'Real-time ride status tracking for passengers',
     ],
   },
   {
@@ -846,10 +846,10 @@ export const projects: Project[] = [
     client: 'Financial sector',
     status: 'Completed',
     highlights: [
-      'Secure financial data presentation with proper authentication',
-      'Transaction categorization and spending pattern insights',
-      'Clean dashboard making complex financial data accessible',
-      'Mobile-first design for on-the-go financial management',
+      'Secure authentication and encrypted data presentation',
+      'Transaction categorization with spending pattern insights',
+      'Account summaries and financial analytics dashboard',
+      'Mobile-first interface for on-the-go financial management',
     ],
   },
   {
@@ -866,10 +866,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Real-time bidding via WebSocket for sub-second updates',
-      'Live auction integrity with transparent bid history',
+      'Real-time bidding via WebSockets with sub-second updates',
+      'Transparent bid history for full auction integrity',
       'Push notifications for auction alerts and outbid warnings',
-      'Mobile-optimized auction experience for on-the-go bidding',
+      'Live auction sessions with instant bid feedback',
     ],
   },
   {
@@ -887,9 +887,9 @@ export const projects: Project[] = [
     status: 'Completed',
     highlights: [
       'Map-based property discovery with visual exploration',
-      'Advanced filtering by price, size, location, and property type',
-      'Analytical tools for property comparison and investment assessment',
-      'Detailed property pages with photos and neighborhood data',
+      'Advanced filters by price, size, location, and property type',
+      'Property comparison and investment analysis tools',
+      'Detailed listings with photos, specs, and neighborhood info',
     ],
   },
   {
@@ -906,10 +906,10 @@ export const projects: Project[] = [
     client: 'Gulf Psychology',
     status: 'Completed',
     highlights: [
-      'Approachable design reducing barriers to mental health access',
-      'Privacy-aware booking appropriate for healthcare appointments',
-      'Practitioner profiles showcasing qualifications and specialties',
-      'Digital front door increasing practice accessibility',
+      'Approachable, non-clinical presentation of psychology services',
+      'Privacy-aware appointment booking for sensitive healthcare',
+      'Practitioner profiles with qualifications and specialties',
+      'Direct contact and booking capabilities from the app',
     ],
   },
   {
@@ -926,10 +926,10 @@ export const projects: Project[] = [
     client: 'Tylos Pharmacy Group',
     status: 'Completed',
     highlights: [
-      'Multi-location pharmacy product browsing and ordering',
-      'Real-time stock information across pharmacy group locations',
-      'Prescription inquiry system for customer convenience',
-      'Integrated catalog covering medications and health products',
+      'Multi-location product browsing with real-time stock info',
+      'Order placement for pickup across pharmacy locations',
+      'Prescription inquiry submission for customer convenience',
+      'Searchable catalog covering medications and health products',
     ],
   },
   {
@@ -946,10 +946,10 @@ export const projects: Project[] = [
     client: 'Qatar market',
     status: 'Completed',
     highlights: [
-      'Two-sided marketplace connecting employers and job seekers',
-      'Application tracking providing visibility to both parties',
-      'Job alerts and saved searches for proactive opportunity discovery',
-      'Employer dashboard with applicant management and hiring analytics',
+      'Two-sided marketplace for employers and job seekers',
+      'Application tracking with status visibility for both parties',
+      'Job alerts and saved searches for proactive discovery',
+      'Employer dashboard with applicant management and analytics',
     ],
   },
   {
@@ -966,10 +966,10 @@ export const projects: Project[] = [
     client: 'Job seekers & employers',
     status: 'Completed',
     highlights: [
-      'Streamlined job search with smart filtering and matching',
-      'One-tap application reducing friction for job seekers',
-      'Application status notifications keeping candidates informed',
-      'Clean, efficient interface for both active and passive job seekers',
+      'Smart filters by industry, location, experience, and salary',
+      'One-tap applications with stored profile data',
+      'Application status notifications for real-time updates',
+      'Job matching and alerts for new matching positions',
     ],
   },
 ];
