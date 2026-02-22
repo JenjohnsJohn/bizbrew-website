@@ -1,2 +1,14 @@
 # Cloudflare Pages - deploy with: npm run deploy
-# Site will be live at https://bizbrew-website.pages.dev
+# Site will be live at https://bizbrew.de
+name = "bizbrew-website"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bizbrew-db"
+database_id = "192785df-958f-405e-a899-3209eb23e75f"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "bizbrew-images"

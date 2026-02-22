@@ -1,15 +1,22 @@
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { getProjectBySlug } from '@/data/projects';
+import { fetchProject } from '@/lib/api';
+import type { ProjectWithSEO } from '@/lib/api';
+import type { Project } from '@/data/projects';
 import SEO from '@/components/SEO';
 import FadeIn from '@/components/FadeIn';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useLayoutEffect } from 'react';
 import { SITE_URL } from '@/lib/seo';
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const project = slug ? getProjectBySlug(slug) : undefined;
+
+  // Start with static data as fallback
+  const staticProject = slug ? getProjectBySlug(slug) : undefined;
+  const [project, setProject] = useState<Project | ProjectWithSEO | undefined>(staticProject);
+  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
     const prevRestoration = window.history.scrollRestoration;
@@ -22,7 +29,28 @@ export default function ProjectDetail() {
     };
   }, [slug]);
 
-  if (!project) {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      if (!slug) return;
+      try {
+        const apiProject = await fetchProject(slug);
+        if (!cancelled && apiProject) {
+          setProject(apiProject);
+        }
+      } catch {
+        // Keep static fallback
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, [slug]);
+
+  if (!project && !loading) {
     return (
       <div className="min-h-screen bg-bizbrew-charcoal flex flex-col items-center justify-center px-6">
         <h1 className="font-display text-3xl text-bizbrew-offwhite mb-4">
@@ -42,20 +70,50 @@ export default function ProjectDetail() {
     );
   }
 
+  if (!project) {
+    // Loading skeleton
+    return (
+      <div className="min-h-screen bg-bizbrew-charcoal animate-pulse">
+        <section className="pt-28 pb-16 md:pt-36 md:pb-24 px-[6vw]">
+          <div className="h-4 bg-white/5 rounded w-24 mb-12" />
+          <div className="h-12 bg-white/5 rounded w-1/2 mb-6" />
+          <div className="flex gap-3 mb-10">
+            <div className="h-10 bg-white/5 rounded-full w-28" />
+            <div className="h-10 bg-white/5 rounded-full w-28" />
+            <div className="h-10 bg-white/5 rounded-full w-28" />
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Use SEO fields from API if available, otherwise fall back to project fields
+  const seo = 'seo' in project
+    ? (project as ProjectWithSEO).seo
+    : { title: `${project.name} | BizBrew`, description: project.summary, image: project.image, keywords: null };
+
+  // For the SEO component, use the raw title from seo (it already has "| BizBrew" appended)
+  // But the SEO component also appends "| BizBrew", so we need to handle this
+  const seoTitle = 'seo' in project && (project as ProjectWithSEO).seo_title
+    ? (project as ProjectWithSEO).seo_title!
+    : project.name;
+  const seoDescription = seo.description;
+  const seoImage = seo.image;
+
   return (
     <div className="min-h-screen bg-bizbrew-charcoal">
       <SEO
-        title={project.name}
-        description={project.summary}
-        image={project.image}
+        title={seoTitle}
+        description={seoDescription}
+        image={seoImage}
         path={`/projects/${slug}`}
         type="article"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CreativeWork',
           name: project.name,
-          description: project.summary,
-          image: `${SITE_URL}${project.image}`,
+          description: seo.description,
+          image: `${SITE_URL}${seo.image}`,
           url: `${SITE_URL}/projects/${slug}`,
           creator: {
             '@type': 'Organization',
@@ -64,7 +122,7 @@ export default function ProjectDetail() {
           },
           dateCreated: project.year.split('–')[0],
           genre: project.category,
-          keywords: project.stack.join(', '),
+          keywords: seo.keywords || project.stack.join(', '),
         }}
       />
 
