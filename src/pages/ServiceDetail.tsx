@@ -101,11 +101,15 @@ export default function ServiceDetail() {
 
           <FadeIn direction="right">
             <div className="w-full aspect-[4/3] md:aspect-[16/10] rounded-frame overflow-hidden">
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-full object-cover"
-              />
+              <picture>
+                <source srcSet={service.image.replace(/\.jpg$/, '.webp')} type="image/webp" />
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </picture>
             </div>
           </FadeIn>
         </div>

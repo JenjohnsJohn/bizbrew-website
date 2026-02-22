@@ -45,11 +45,15 @@ export default function TestimonialsSection() {
                     </blockquote>
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full overflow-hidden bg-bizbrew-offwhite">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.author}
-                          className="w-full h-full object-cover"
-                        />
+                        <picture>
+                          <source srcSet={testimonial.image.replace(/\.jpg$/, '.webp')} type="image/webp" />
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.author}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </picture>
                       </div>
                       <div>
                         <p className="font-medium text-bizbrew-charcoal">
@@ -64,11 +68,15 @@ export default function TestimonialsSection() {
 
                   {/* Image */}
                   <div className="w-full lg:w-[40%] aspect-[4/5] rounded-[22px] overflow-hidden">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.author}
-                      className="w-full h-full object-cover"
-                    />
+                    <picture>
+                      <source srcSet={testimonial.image.replace(/\.jpg$/, '.webp')} type="image/webp" />
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.author}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>

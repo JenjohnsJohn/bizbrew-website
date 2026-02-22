@@ -241,11 +241,15 @@ export default function BlogPost() {
                 className="group bg-white/5 border border-white/10 rounded-[22px] overflow-hidden hover:border-bizbrew-amber/30 transition-all"
               >
                 <div className="aspect-[16/10] overflow-hidden">
-                  <img
-                    src={related.image}
-                    alt={related.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  <picture>
+                    <source srcSet={related.image.replace(/\.jpg$/, '.webp')} type="image/webp" />
+                    <img
+                      src={related.image}
+                      alt={related.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </picture>
                 </div>
                 <div className="p-6">
                   <div className="flex flex-wrap gap-2 mb-3">

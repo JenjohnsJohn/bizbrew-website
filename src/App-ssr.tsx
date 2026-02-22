@@ -16,6 +16,8 @@ import FAQPage from './pages/FAQPage';
 import BlogPage from './pages/BlogPage';
 import BlogPost from './pages/BlogPost';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ProjectsPage from './pages/ProjectsPage';
+import ProjectDetail from './pages/ProjectDetail';
 import TermsOfService from './pages/TermsOfService';
 
 function SSRLayout({ children }: { children: React.ReactNode }) {
@@ -40,6 +42,8 @@ export function AppRoutesSSR() {
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
       </Routes>

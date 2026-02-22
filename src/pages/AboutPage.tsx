@@ -63,11 +63,15 @@ export default function AboutPage() {
           </div>
 
           <div className="w-full aspect-[4/3] rounded-frame overflow-hidden">
-            <img
-              src="/process_architecture.jpg"
-              alt="Software architecture"
-              className="w-full h-full object-cover"
-            />
+            <picture>
+              <source srcSet="/process_architecture.webp" type="image/webp" />
+              <img
+                src="/process_architecture.jpg"
+                alt="Software architecture"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </picture>
           </div>
         </div>
 

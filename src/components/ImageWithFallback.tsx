@@ -4,14 +4,21 @@ interface ImageWithFallbackProps {
   src: string;
   alt: string;
   className?: string;
+  loading?: 'lazy' | 'eager';
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export default function ImageWithFallback({
   src,
   alt,
   className = '',
+  loading = 'lazy',
+  fetchPriority,
 }: ImageWithFallbackProps) {
   const [hasError, setHasError] = useState(false);
+
+  // Derive WebP source from the jpg path
+  const webpSrc = src.replace(/\.jpg$/, '.webp');
 
   if (hasError) {
     return (
@@ -38,11 +45,16 @@ export default function ImageWithFallback({
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      onError={() => setHasError(true)}
-    />
+    <picture>
+      <source srcSet={webpSrc} type="image/webp" />
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        loading={loading}
+        {...(fetchPriority ? { fetchPriority } : {})}
+        onError={() => setHasError(true)}
+      />
+    </picture>
   );
 }

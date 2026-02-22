@@ -60,11 +60,15 @@ export default function ContactSection() {
           <div className="w-full lg:w-[50%]">
             <FadeIn direction="right">
               <div className="w-full aspect-[4/5] lg:aspect-auto lg:h-[72vh] rounded-frame overflow-hidden">
-                <img
-                  src="/contact_roaster.jpg"
-                  alt="Coffee roasting"
-                  className="w-full h-full object-cover"
-                />
+                <picture>
+                  <source srcSet="/contact_roaster.webp" type="image/webp" />
+                  <img
+                    src="/contact_roaster.jpg"
+                    alt="Coffee roasting"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
             </FadeIn>
           </div>

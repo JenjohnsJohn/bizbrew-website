@@ -54,11 +54,15 @@ export default function ProcessSection() {
               >
                 {/* Image */}
                 <div className="w-full lg:w-[55%] aspect-[16/10] rounded-[22px] overflow-hidden bg-white shadow-sm">
-                  <img
-                    src={step.image}
-                    alt={step.title}
-                    className="w-full h-full object-cover"
-                  />
+                  <picture>
+                    <source srcSet={step.image.replace(/\.jpg$/, '.webp')} type="image/webp" />
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </picture>
                 </div>
 
                 {/* Content */}

@@ -29,11 +29,16 @@ export default function HeroSection() {
 
         {/* Image */}
         <div className="w-full aspect-[4/3] rounded-frame overflow-hidden">
-          <img
-            src="/hero_barista.jpg"
-            alt="Coffee brewing — representing the craft behind BizBrew software"
-            className="w-full h-full object-cover"
-          />
+          <picture>
+            <source srcSet="/hero_barista.webp" type="image/webp" />
+            <img
+              src="/hero_barista.jpg"
+              alt="Coffee brewing — representing the craft behind BizBrew software"
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </picture>
         </div>
       </div>
 
