@@ -4,7 +4,6 @@
  */
 import { Routes, Route } from 'react-router-dom';
 
-import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -22,8 +21,6 @@ import TermsOfService from './pages/TermsOfService';
 function SSRLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
-      <CustomCursor />
-      <div className="grain-overlay" />
       <Navigation />
       {children}
       <Footer />

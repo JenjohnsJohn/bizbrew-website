@@ -40,84 +40,77 @@
   * {
     @apply border-border;
   }
-  
+
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
   }
-  
+
   body {
     @apply bg-[#1B1B1B] text-[#F5F5F2] antialiased;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Sora', sans-serif;
     letter-spacing: -0.02em;
   }
-  
+
   .font-mono {
     font-family: 'IBM Plex Mono', monospace;
   }
 }
 
 @layer components {
-  .section-pinned {
-    @apply w-screen h-screen relative overflow-hidden;
-  }
-  
   .section-flowing {
     @apply w-full relative;
   }
-  
-  .grain-overlay {
-    @apply fixed inset-0 pointer-events-none z-50;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.04;
-    mix-blend-mode: overlay;
-  }
-  
+
   .amber-pill {
     @apply bg-[#D99A4D] rounded-full;
   }
-  
+
   .rounded-frame {
     @apply rounded-[36px] overflow-hidden;
   }
-  
+
   .pill-frame {
     @apply rounded-[999px] overflow-hidden;
   }
-  
+
   .text-gradient {
     @apply bg-gradient-to-r from-[#D99A4D] to-[#E8B87A] bg-clip-text text-transparent;
   }
-  
+
   .hover-lift {
     @apply transition-transform duration-300 hover:-translate-y-0.5;
   }
-  
+
   .nav-link {
     @apply relative text-sm font-mono text-[#B8B2AA] hover:text-[#F5F5F2] transition-colors duration-300;
   }
-  
+
   .nav-link::after {
     content: '';
     @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D99A4D] transition-all duration-300;
   }
-  
+
   .nav-link:hover::after {
     @apply w-full;
   }
-  
+
   .cta-button {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#D99A4D] text-[#1B1B1B] font-medium rounded-full 
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#D99A4D] text-[#1B1B1B] font-medium rounded-full
            transition-all duration-300 hover:bg-[#E8B87A] hover:-translate-y-0.5 hover:shadow-lg;
   }
-  
+
   .cta-button-outline {
-    @apply inline-flex items-center gap-2 px-6 py-3 border border-[#D99A4D] text-[#D99A4D] font-medium rounded-full 
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-[#D99A4D] text-[#D99A4D] font-medium rounded-full
            transition-all duration-300 hover:bg-[#D99A4D] hover:text-[#1B1B1B];
+  }
+
+  .image-placeholder {
+    @apply bg-gradient-to-br from-[#1B1B1B] to-[#2a2a2a] border border-white/10;
   }
 }
 
@@ -125,15 +118,15 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .animation-delay-100 {
     animation-delay: 100ms;
   }
-  
+
   .animation-delay-200 {
     animation-delay: 200ms;
   }
-  
+
   .animation-delay-300 {
     animation-delay: 300ms;
   }

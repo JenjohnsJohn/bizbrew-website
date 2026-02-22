@@ -1,29 +1,18 @@
 import { getCaseStudyBySlug } from '@/data/caseStudies';
 import SEO from '@/components/SEO';
 import AnimatedCounter from '@/components/AnimatedCounter';
-import StaggeredReveal from '@/components/StaggeredReveal';
+import FadeIn from '@/components/FadeIn';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useRef, useEffect, useLayoutEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLayoutEffect } from 'react';
 import { SITE_URL } from '@/lib/seo';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function CaseStudyDetail() {
   const { slug } = useParams<{ slug: string }>();
   const caseStudy = slug ? getCaseStudyBySlug(slug) : undefined;
 
-  const challengeRef = useRef<HTMLElement>(null);
-  const approachRef = useRef<HTMLElement>(null);
-  const solutionRef = useRef<HTMLElement>(null);
-  const resultsRef = useRef<HTMLElement>(null);
-  const techRef = useRef<HTMLElement>(null);
-  const testimonialRef = useRef<HTMLElement>(null);
-  const ctaRef = useRef<HTMLElement>(null);
-
-  // Reset scroll on mount (same pattern as ServiceDetail)
+  // Reset scroll on mount
   useLayoutEffect(() => {
     const prevRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = 'manual';
@@ -34,42 +23,6 @@ export default function CaseStudyDetail() {
       window.history.scrollRestoration = prevRestoration;
     };
   }, [slug]);
-
-  useEffect(() => {
-    if (!caseStudy) return;
-
-    const sections = [
-      challengeRef.current,
-      approachRef.current,
-      solutionRef.current,
-      resultsRef.current,
-      techRef.current,
-      testimonialRef.current,
-      ctaRef.current,
-    ].filter(Boolean) as HTMLElement[];
-
-    const ctx = gsap.context(() => {
-      sections.forEach((section) => {
-        gsap.fromTo(
-          section,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      });
-    });
-
-    return () => ctx.revert();
-  }, [caseStudy]);
 
   if (!caseStudy) {
     return (
@@ -116,41 +69,42 @@ export default function CaseStudyDetail() {
 
       {/* Hero */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 px-[6vw]">
-        <Link
-          to="/case-studies"
-          className="inline-flex items-center gap-2 text-bizbrew-text-secondary hover:text-bizbrew-amber transition-colors mb-12 font-mono text-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          All case studies
-        </Link>
+        <FadeIn>
+          <Link
+            to="/case-studies"
+            className="inline-flex items-center gap-2 text-bizbrew-text-secondary hover:text-bizbrew-amber transition-colors mb-12 font-mono text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            All case studies
+          </Link>
 
-        <h1 className="font-display font-bold text-[clamp(36px,5vw,64px)] leading-[1.1] text-bizbrew-offwhite mb-6">
-          {caseStudy.title}
-        </h1>
+          <h1 className="font-display font-bold text-[clamp(36px,5vw,64px)] leading-[1.1] text-bizbrew-offwhite mb-6">
+            {caseStudy.title}
+          </h1>
 
-        <div className="flex flex-wrap gap-3 mb-10">
-          <span className="px-4 py-2 rounded-full bg-white/5 text-bizbrew-text-secondary font-mono text-sm border border-white/10">
-            {caseStudy.client}
-          </span>
-          <span className="px-4 py-2 rounded-full bg-white/5 text-bizbrew-text-secondary font-mono text-sm border border-white/10">
-            {caseStudy.industry}
-          </span>
-        </div>
+          <div className="flex flex-wrap gap-3 mb-10">
+            <span className="px-4 py-2 rounded-full bg-white/5 text-bizbrew-text-secondary font-mono text-sm border border-white/10">
+              {caseStudy.client}
+            </span>
+            <span className="px-4 py-2 rounded-full bg-white/5 text-bizbrew-text-secondary font-mono text-sm border border-white/10">
+              {caseStudy.industry}
+            </span>
+          </div>
+        </FadeIn>
 
-        <div className="w-full aspect-[16/10] rounded-frame overflow-hidden">
-          <img
-            src={caseStudy.image}
-            alt={caseStudy.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <FadeIn>
+          <div className="w-full aspect-[16/10] rounded-frame overflow-hidden">
+            <ImageWithFallback
+              src={caseStudy.image}
+              alt={caseStudy.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </FadeIn>
       </section>
 
       {/* Challenge */}
-      <section
-        ref={challengeRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
           The Challenge
         </h2>
@@ -164,13 +118,10 @@ export default function CaseStudyDetail() {
             </p>
           ))}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Approach */}
-      <section
-        ref={approachRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
           Our Approach
         </h2>
@@ -184,13 +135,10 @@ export default function CaseStudyDetail() {
             </p>
           ))}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Solution */}
-      <section
-        ref={solutionRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
           The Solution
         </h2>
@@ -204,43 +152,36 @@ export default function CaseStudyDetail() {
             </p>
           ))}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Results */}
-      <section
-        ref={resultsRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-12">
           Results
         </h2>
-        <StaggeredReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {caseStudy.results.map((result, i) => (
-            <div
-              key={i}
-              className="bg-white/5 border border-white/10 rounded-[22px] p-6"
-            >
-              <AnimatedCounter
-                end={result.value}
-                suffix={result.suffix}
-                className="font-display font-bold text-3xl text-bizbrew-amber block mb-2"
-              />
-              <h3 className="font-display font-semibold text-sm text-bizbrew-offwhite mb-2">
-                {result.metric}
-              </h3>
-              <p className="text-bizbrew-text-secondary text-sm leading-relaxed">
-                {result.description}
-              </p>
-            </div>
+            <FadeIn key={i} delay={i * 80}>
+              <div className="bg-white/5 border border-white/10 rounded-[22px] p-6">
+                <AnimatedCounter
+                  end={result.value}
+                  suffix={result.suffix}
+                  className="font-display font-bold text-3xl text-bizbrew-amber block mb-2"
+                />
+                <h3 className="font-display font-semibold text-sm text-bizbrew-offwhite mb-2">
+                  {result.metric}
+                </h3>
+                <p className="text-bizbrew-text-secondary text-sm leading-relaxed">
+                  {result.description}
+                </p>
+              </div>
+            </FadeIn>
           ))}
-        </StaggeredReveal>
-      </section>
+        </div>
+      </FadeIn>
 
       {/* Technologies */}
-      <section
-        ref={techRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-2xl text-bizbrew-offwhite mb-8">
           Technologies
         </h2>
@@ -254,16 +195,13 @@ export default function CaseStudyDetail() {
             </span>
           ))}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Testimonial */}
-      <section
-        ref={testimonialRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <blockquote className="max-w-3xl border-l-4 border-bizbrew-amber pl-6 md:pl-8">
           <p className="text-lg md:text-xl text-bizbrew-offwhite leading-relaxed italic mb-6">
-            "{caseStudy.testimonial.quote}"
+            &ldquo;{caseStudy.testimonial.quote}&rdquo;
           </p>
           <footer className="text-bizbrew-text-secondary">
             <span className="font-display font-semibold text-bizbrew-offwhite">
@@ -273,13 +211,10 @@ export default function CaseStudyDetail() {
             <span>{caseStudy.testimonial.role}</span>
           </footer>
         </blockquote>
-      </section>
+      </FadeIn>
 
       {/* Related Service + CTA */}
-      <section
-        ref={ctaRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <p className="text-bizbrew-text-secondary mb-4">
           This project used our{' '}
           <Link
@@ -300,7 +235,7 @@ export default function CaseStudyDetail() {
           Start a conversation
           <ArrowRight className="w-4 h-4" />
         </Link>
-      </section>
+      </FadeIn>
     </div>
   );
 }

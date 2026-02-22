@@ -1,13 +1,10 @@
-import { useRef, useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
 
 import SEO from '@/components/SEO';
 import AnimatedCounter from '@/components/AnimatedCounter';
-import ParallaxImage from '@/components/ParallaxImage';
-import StaggeredReveal from '@/components/StaggeredReveal';
+import FadeIn from '@/components/FadeIn';
 import { SITE_URL } from '@/lib/seo';
 import {
   aboutHero,
@@ -16,8 +13,6 @@ import {
   aboutStats,
   aboutTechPhilosophy,
 } from '@/data/about';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const aboutJsonLd = {
   '@context': 'https://schema.org',
@@ -31,13 +26,6 @@ const aboutJsonLd = {
 };
 
 export default function AboutPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const storyRef = useRef<HTMLElement>(null);
-  const valuesRef = useRef<HTMLElement>(null);
-  const numbersRef = useRef<HTMLElement>(null);
-  const techRef = useRef<HTMLElement>(null);
-  const ctaRef = useRef<HTMLElement>(null);
-
   // Reset scroll on mount
   useLayoutEffect(() => {
     const prevRestoration = window.history.scrollRestoration;
@@ -50,49 +38,6 @@ export default function AboutPage() {
     };
   }, []);
 
-  // Fade-up ScrollTrigger animations for each section
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
-    const sectionRefs = [
-      heroRef,
-      storyRef,
-      valuesRef,
-      numbersRef,
-      techRef,
-      ctaRef,
-    ];
-
-    const ctx = gsap.context(() => {
-      sectionRefs.forEach((ref) => {
-        const el = ref.current;
-        if (!el) return;
-
-        gsap.fromTo(
-          el,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <div className="min-h-screen bg-bizbrew-charcoal">
       <SEO
@@ -103,10 +48,7 @@ export default function AboutPage() {
       />
 
       {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative pt-28 pb-16 md:pt-36 md:pb-24 px-[6vw]"
-      >
+      <FadeIn as="section" className="relative pt-28 pb-16 md:pt-36 md:pb-24 px-[6vw]">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div>
             <p className="font-mono text-sm text-bizbrew-amber tracking-wider uppercase mb-4">
@@ -121,22 +63,19 @@ export default function AboutPage() {
           </div>
 
           <div className="w-full aspect-[4/3] rounded-frame overflow-hidden">
-            <ParallaxImage
+            <img
               src="/process_architecture.jpg"
               alt="Software architecture"
-              className="w-full h-full"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
 
         <div className="absolute right-[6vw] bottom-12 md:bottom-16 w-12 h-1 amber-pill" />
-      </section>
+      </FadeIn>
 
       {/* Story */}
-      <section
-        ref={storyRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <div className="max-w-3xl">
           <h2 className="font-display font-bold text-3xl md:text-4xl text-bizbrew-offwhite mb-10">
             {aboutStory.title}
@@ -152,45 +91,34 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </FadeIn>
 
       {/* Values */}
-      <section
-        ref={valuesRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-3xl md:text-4xl text-bizbrew-offwhite mb-12">
           What we stand for
         </h2>
-        <StaggeredReveal
-          stagger={0.1}
-          direction="up"
-          className="grid md:grid-cols-2 gap-8"
-        >
+        <div className="grid md:grid-cols-2 gap-8">
           {aboutValues.map((value, i) => (
-            <div
-              key={i}
-              className="p-6 md:p-8 rounded-frame bg-white/[0.03] border border-white/5 hover:border-bizbrew-amber/20 transition-colors duration-300"
-            >
-              <h3 className="font-display font-semibold text-xl text-bizbrew-amber mb-3">
-                {value.title}
-              </h3>
-              <p className="text-bizbrew-offwhite leading-relaxed mb-4">
-                {value.description}
-              </p>
-              <p className="text-bizbrew-text-secondary leading-relaxed text-sm">
-                {value.detail}
-              </p>
-            </div>
+            <FadeIn key={i} delay={i * 80}>
+              <div className="p-6 md:p-8 rounded-frame bg-white/[0.03] border border-white/5 hover:border-bizbrew-amber/20 transition-colors duration-300">
+                <h3 className="font-display font-semibold text-xl text-bizbrew-amber mb-3">
+                  {value.title}
+                </h3>
+                <p className="text-bizbrew-offwhite leading-relaxed mb-4">
+                  {value.description}
+                </p>
+                <p className="text-bizbrew-text-secondary leading-relaxed text-sm">
+                  {value.detail}
+                </p>
+              </div>
+            </FadeIn>
           ))}
-        </StaggeredReveal>
-      </section>
+        </div>
+      </FadeIn>
 
       {/* Numbers */}
-      <section
-        ref={numbersRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-3xl md:text-4xl text-bizbrew-offwhite mb-12">
           By the numbers
         </h2>
@@ -211,13 +139,10 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Tech Philosophy */}
-      <section
-        ref={techRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <div className="max-w-3xl">
           <h2 className="font-display font-bold text-3xl md:text-4xl text-bizbrew-offwhite mb-10">
             {aboutTechPhilosophy.title}
@@ -233,13 +158,10 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </FadeIn>
 
       {/* CTA */}
-      <section
-        ref={ctaRef}
-        className="px-[6vw] py-16 md:py-24 border-t border-white/5"
-      >
+      <FadeIn as="section" className="px-[6vw] py-16 md:py-24 border-t border-white/5">
         <h2 className="font-display font-bold text-3xl md:text-4xl text-bizbrew-offwhite mb-4">
           Let's talk about your project
         </h2>
@@ -254,7 +176,7 @@ export default function AboutPage() {
           Get in touch
           <ArrowRight className="w-4 h-4" />
         </Link>
-      </section>
+      </FadeIn>
     </div>
   );
 }

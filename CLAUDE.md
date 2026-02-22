@@ -31,19 +31,19 @@ The full build is a three-stage pipeline: TypeScript type-check (`tsc -b`) → V
 3. `scripts/prerender.mjs` (routes array + meta tags for static HTML generation)
 
 **Routing:** React Router v7 with two route patterns:
-- `/` → `HomePage` (landing page composed of section components)
+- `/` → `HomePage` (landing page composed of 7 section components)
 - `/services/:slug` → `ServiceDetail` (6 service pages, slugs defined in `src/data/services.ts`)
 
 Hash anchors (`/#services`, `/#work`, `/#process`, `/#contact`) scroll to homepage sections.
 
 ## Key Directories
 
-- `src/pages/` — Route-level page components (HomePage, ServiceDetail)
-- `src/sections/` — Homepage section components (Hero, ServicesOverview, Contact, etc.)
+- `src/pages/` — Route-level page components (HomePage, ServiceDetail, AboutPage, etc.)
+- `src/sections/` — Homepage section components (HeroSection, ServicesSection, ProcessSection, WorkSection, TestimonialsSection, StatsSection, ContactSection)
 - `src/components/` — Shared components; `components/ui/` contains ~55 Radix UI/shadcn-based primitives
 - `src/data/services.ts` — Service definitions and content data
 - `src/lib/seo.ts` — SEO metadata config (site URL, default descriptions, JSON-LD generators)
-- `src/hooks/` — `useSmoothScroll` (Lenis + GSAP), `use-mobile` (responsive detection)
+- `src/hooks/` — `useInView` (Intersection Observer), `use-mobile` (responsive detection)
 - `scripts/prerender.mjs` — Generates static HTML for all routes with injected meta tags
 
 ## Styling
@@ -52,13 +52,13 @@ Tailwind CSS with custom brand tokens defined in `tailwind.config.js`:
 - Colors: charcoal (`#1B1B1B`), offwhite (`#F5F5F2`), amber (`#D99A4D`)
 - Fonts: Sora (display), Inter (body), IBM Plex Mono (mono)
 - CSS custom properties for theming in `src/index.css`
-- Utility classes: `.section-pinned`, `.section-flowing`, `.grain-overlay`, `.text-gradient`
+- Utility classes: `.section-flowing`, `.text-gradient`, `.cta-button`, `.nav-link`, `.rounded-frame`, `.image-placeholder`
 
 Uses shadcn/ui (new-york style) configured in `components.json` with `@` path alias.
 
 ## Animation
 
-GSAP with ScrollTrigger for scroll-based animations and pinned sections. Lenis provides smooth scrolling integrated via `useSmoothScroll` hook. Custom interactive components: `CustomCursor` (desktop only, auto-disabled on touch), `ImageReveal`, `KineticText`, `TextScramble`, `TiltCard`, `MagneticButton`.
+Lightweight CSS-based animations using a custom `useInView` hook (Intersection Observer API) and a `FadeIn` wrapper component. No external animation libraries. The `FadeIn` component supports directional reveals (up/down/left/right), staggered delays, and respects `prefers-reduced-motion`. The `AnimatedCounter` component uses `requestAnimationFrame` for number counting animations. `ImageWithFallback` provides graceful fallback for missing images.
 
 ## Path Alias
 

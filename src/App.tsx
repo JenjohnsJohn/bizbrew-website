@@ -13,22 +13,15 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 
-function LoadingSkeleton() {
+function LoadingFallback() {
   return (
-    <div className="min-h-screen bg-bizbrew-charcoal flex items-center justify-center">
-      <div className="space-y-4 w-full max-w-md px-6">
-        <div className="h-8 bg-white/5 rounded-lg animate-pulse" />
-        <div className="h-4 bg-white/5 rounded-lg animate-pulse w-3/4" />
-        <div className="h-4 bg-white/5 rounded-lg animate-pulse w-1/2" />
-        <div className="h-32 bg-white/5 rounded-[22px] animate-pulse mt-8" />
-      </div>
-    </div>
+    <div className="min-h-screen bg-bizbrew-charcoal" />
   );
 }
 
 export function AppRoutes() {
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
+    <Suspense fallback={<LoadingFallback />}>
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />

@@ -1,8 +1,5 @@
-import { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useEffect, useState } from 'react';
+import { useInView } from '../hooks/useInView';
 
 interface AnimatedCounterProps {
   end: number;
@@ -12,55 +9,48 @@ interface AnimatedCounterProps {
   className?: string;
 }
 
+function easeOutQuad(t: number): number {
+  return t * (2 - t);
+}
+
 export default function AnimatedCounter({
   end,
-  duration = 2,
+  duration = 2000,
   prefix = '',
   suffix = '',
   className = '',
 }: AnimatedCounterProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const countRef = useRef({ value: 0 });
+  const { ref, isInView } = useInView({ threshold: 0.3 });
+  const [display, setDisplay] = useState(`${prefix}0${suffix}`);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!isInView || hasAnimated.current) return;
+    hasAnimated.current = true;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const start = performance.now();
 
-    if (prefersReducedMotion) {
-      el.textContent = `${prefix}${end}${suffix}`;
-      return;
+    function tick(now: number) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutQuad(progress);
+      const value = eased * end;
+      const formatted = Number.isInteger(end)
+        ? Math.round(value)
+        : value.toFixed(1);
+      setDisplay(`${prefix}${formatted}${suffix}`);
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
     }
 
-    countRef.current.value = 0;
-    el.textContent = `${prefix}0${suffix}`;
-
-    const tween = gsap.to(countRef.current, {
-      value: end,
-      duration,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      },
-      onUpdate: () => {
-        const v = countRef.current.value;
-        const display = Number.isInteger(end) ? Math.round(v) : v.toFixed(1);
-        el.textContent = `${prefix}${display}${suffix}`;
-      },
-    });
-
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [end, duration, prefix, suffix]);
+    requestAnimationFrame(tick);
+  }, [isInView, end, duration, prefix, suffix]);
 
   return (
     <span ref={ref} className={className}>
-      {prefix}0{suffix}
+      {display}
     </span>
   );
 }
