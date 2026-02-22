@@ -35,6 +35,8 @@ export default function HomePage() {
   useSmoothScroll();
 
   useEffect(() => {
+    if (window.innerWidth < 1024) return;
+
     const timeout = setTimeout(() => {
       const pinned = ScrollTrigger.getAll()
         .filter((st) => (st.vars as { pin?: boolean }).pin)

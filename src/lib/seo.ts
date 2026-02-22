@@ -16,7 +16,7 @@ export interface SEOProps {
   jsonLd?: Record<string, unknown>;
 }
 
-function getAbsoluteUrl(path: string): string {
+export function getAbsoluteUrl(path: string): string {
   const base = SITE_URL.replace(/\/$/, '');
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${base}${normalizedPath}`;
@@ -68,8 +68,7 @@ export function setSEO({ title, description, image, path = '/', type = 'website'
   }
 }
 
-export function injectJsonLd(data: Record<string, unknown>) {
-  const id = 'bizbrew-jsonld';
+export function injectJsonLd(data: Record<string, unknown>, id = 'bizbrew-jsonld') {
   let script = document.getElementById(id) as HTMLScriptElement | null;
   if (!script) {
     script = document.createElement('script');
@@ -78,4 +77,62 @@ export function injectJsonLd(data: Record<string, unknown>) {
     document.head.appendChild(script);
   }
   script.textContent = JSON.stringify(data);
+}
+
+export function generateBreadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+export function generateArticleJsonLd(article: {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  author: string;
+  image?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    url: article.url,
+    datePublished: article.datePublished,
+    author: {
+      '@type': 'Organization',
+      name: article.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    image: article.image ? getAbsoluteUrl(article.image) : undefined,
+  };
+}
+
+export function generateLocalBusinessJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: SITE_NAME,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    email: 'contact@bizbrew.de',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'DE',
+    },
+    priceRange: '$$',
+  };
 }

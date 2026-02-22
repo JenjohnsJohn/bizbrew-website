@@ -2,6 +2,7 @@ import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
+import { useIsDesktop } from '../hooks/useIsDesktop';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,115 +13,127 @@ export default function SaaSProducts() {
   const imageRef = useRef<HTMLDivElement>(null);
   const arcRef = useRef<SVGPathElement>(null);
   const accentPillRef = useRef<HTMLDivElement>(null);
+  const isDesktop = useIsDesktop();
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
-        },
-      });
-
-      // ENTRANCE (0% - 30%) - Image from left, text from right
-      scrollTl.fromTo(
-        imageRef.current,
-        { x: '-60vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0
-      );
-
-      const headlineLines = headlineRef.current?.querySelectorAll('.headline-line');
-      if (headlineLines) {
-        scrollTl.fromTo(
-          headlineLines,
-          { x: '50vw', opacity: 0 },
-          { x: 0, opacity: 1, ease: 'none', stagger: 0.04 },
-          0.05
-        );
-      }
-
-      scrollTl.fromTo(
-        bodyRef.current,
-        { y: '8vh', opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
-        0.1
-      );
-
-      if (arcRef.current) {
-        const arcLength = arcRef.current.getTotalLength();
-        gsap.set(arcRef.current, {
-          strokeDasharray: arcLength,
-          strokeDashoffset: arcLength,
+      if (isDesktop) {
+        const scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=130%',
+            pin: true,
+            scrub: 0.6,
+          },
         });
-        scrollTl.to(
-          arcRef.current,
-          { strokeDashoffset: 0, opacity: 1, ease: 'none' },
+
+        // ENTRANCE (0% - 30%) - Image from left, text from right
+        scrollTl.fromTo(
+          imageRef.current,
+          { x: '-60vw', opacity: 0 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0
+        );
+
+        const headlineLines = headlineRef.current?.querySelectorAll('.headline-line');
+        if (headlineLines) {
+          scrollTl.fromTo(
+            headlineLines,
+            { x: '50vw', opacity: 0 },
+            { x: 0, opacity: 1, ease: 'none', stagger: 0.04 },
+            0.05
+          );
+        }
+
+        scrollTl.fromTo(
+          bodyRef.current,
+          { y: '8vh', opacity: 0 },
+          { y: 0, opacity: 1, ease: 'none' },
           0.1
         );
-      }
 
-      scrollTl.fromTo(
-        accentPillRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, ease: 'none', transformOrigin: 'right center' },
-        0.15
-      );
+        if (arcRef.current) {
+          const arcLength = arcRef.current.getTotalLength();
+          gsap.set(arcRef.current, {
+            strokeDasharray: arcLength,
+            strokeDashoffset: arcLength,
+          });
+          scrollTl.to(
+            arcRef.current,
+            { strokeDashoffset: 0, opacity: 1, ease: 'none' },
+            0.1
+          );
+        }
 
-      // SETTLE (30% - 70%) - static
-
-      // EXIT (70% - 100%)
-      scrollTl.fromTo(
-        imageRef.current,
-        { x: 0, opacity: 1 },
-        { x: '-10vw', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
-      if (headlineLines) {
         scrollTl.fromTo(
-          headlineLines,
+          accentPillRef.current,
+          { scaleX: 0 },
+          { scaleX: 1, ease: 'none', transformOrigin: 'right center' },
+          0.15
+        );
+
+        // SETTLE (30% - 70%) - static
+
+        // EXIT (70% - 100%)
+        scrollTl.fromTo(
+          imageRef.current,
           { x: 0, opacity: 1 },
-          { x: '10vw', opacity: 0, ease: 'power2.in', stagger: 0.02 },
+          { x: '-10vw', opacity: 0, ease: 'power2.in' },
           0.7
         );
-      }
 
-      scrollTl.fromTo(
-        bodyRef.current,
-        { opacity: 1 },
-        { opacity: 0, ease: 'power2.in' },
-        0.72
-      );
+        if (headlineLines) {
+          scrollTl.fromTo(
+            headlineLines,
+            { x: 0, opacity: 1 },
+            { x: '10vw', opacity: 0, ease: 'power2.in', stagger: 0.02 },
+            0.7
+          );
+        }
 
-      if (arcRef.current) {
         scrollTl.fromTo(
-          arcRef.current,
-          { x: 0, opacity: 1 },
-          { x: '-6vw', opacity: 0, ease: 'power2.in' },
+          bodyRef.current,
+          { opacity: 1 },
+          { opacity: 0, ease: 'power2.in' },
           0.72
         );
+
+        if (arcRef.current) {
+          scrollTl.fromTo(
+            arcRef.current,
+            { x: 0, opacity: 1 },
+            { x: '-6vw', opacity: 0, ease: 'power2.in' },
+            0.72
+          );
+        }
+
+        scrollTl.fromTo(
+          accentPillRef.current,
+          { opacity: 1 },
+          { opacity: 0, ease: 'power2.in' },
+          0.8
+        );
+      } else {
+        // Simple mobile fade-up
+        gsap.fromTo(
+          section,
+          { y: 30, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
+          }
+        );
       }
-
-      scrollTl.fromTo(
-        accentPillRef.current,
-        { opacity: 1 },
-        { opacity: 0, ease: 'power2.in' },
-        0.8
-      );
-
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [isDesktop]);
 
-  return (
+  return isDesktop ? (
     <section
       ref={sectionRef}
       className="section-pinned bg-bizbrew-charcoal z-40"
@@ -187,6 +200,37 @@ export default function SaaSProducts() {
         ref={accentPillRef}
         className="absolute right-[6vw] bottom-[10vh] w-[10vw] h-[3.5vh] amber-pill"
       />
+    </section>
+  ) : (
+    <section
+      ref={sectionRef}
+      className="section-flowing bg-bizbrew-charcoal px-6 py-16"
+    >
+      {/* Headline */}
+      <h2 className="font-display font-bold text-[clamp(36px,8vw,56px)] leading-[1.05] text-bizbrew-offwhite mb-6">
+        <span className="text-bizbrew-amber">SaaS</span> Products
+      </h2>
+
+      {/* Image */}
+      <div className="w-full aspect-[4/3] rounded-[24px] overflow-hidden mb-6">
+        <img
+          src="/saas_prepare.jpg"
+          alt="Barista preparing coffee"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Body Copy + CTA */}
+      <p className="text-lg text-bizbrew-text-secondary leading-relaxed mb-6">
+        From idea to production: multi-tenant systems, billing, roles, and admin dashboards—built to scale.
+      </p>
+      <a
+        href="#process"
+        className="inline-flex items-center gap-2 text-bizbrew-amber font-medium hover:gap-3 transition-all"
+      >
+        Explore the SaaS playbook
+        <ArrowRight className="w-4 h-4" />
+      </a>
     </section>
   );
 }

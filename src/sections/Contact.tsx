@@ -201,18 +201,6 @@ export default function Contact() {
         className="absolute left-[6vw] bottom-[10vh] w-[10vw] h-[3.5vh] amber-pill hidden lg:block"
       />
 
-      {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 px-[6vw] py-8 border-t border-white/10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-display font-bold text-xl text-bizbrew-offwhite">
-            BizBrew
-          </p>
-          <p className="font-mono text-sm text-bizbrew-text-secondary">
-            © 2026 BizBrew. All rights reserved.
-          </p>
-        </div>
-      </footer>
-
       {/* Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="bg-bizbrew-charcoal border-white/10 text-bizbrew-offwhite max-w-md">

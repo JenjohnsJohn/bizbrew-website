@@ -1,6 +1,7 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useIsDesktop } from '../hooks/useIsDesktop';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,113 +36,125 @@ export default function TechStack() {
   const imageRef = useRef<HTMLDivElement>(null);
   const arcRef = useRef<SVGPathElement>(null);
   const accentPillRef = useRef<HTMLDivElement>(null);
+  const isDesktop = useIsDesktop();
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
-        },
-      });
-
-      // ENTRANCE (0% - 30%) - Image from left, text from right
-      scrollTl.fromTo(
-        imageRef.current,
-        { x: '-60vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0
-      );
-
-      scrollTl.fromTo(
-        headlineRef.current,
-        { x: '50vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0.05
-      );
-
-      scrollTl.fromTo(
-        bodyRef.current,
-        { y: '6vh', opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
-        0.1
-      );
-
-      const categoryItems = categoriesRef.current?.querySelectorAll('li');
-      if (categoryItems) {
-        scrollTl.fromTo(
-          categoryItems,
-          { y: '8vh', opacity: 0 },
-          { y: 0, opacity: 1, ease: 'none', stagger: 0.02 },
-          0.12
-        );
-      }
-
-      if (arcRef.current) {
-        const arcLength = arcRef.current.getTotalLength();
-        gsap.set(arcRef.current, {
-          strokeDasharray: arcLength,
-          strokeDashoffset: arcLength,
+      if (isDesktop) {
+        const scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=130%',
+            pin: true,
+            scrub: 0.6,
+          },
         });
-        scrollTl.to(
-          arcRef.current,
-          { strokeDashoffset: 0, opacity: 1, ease: 'none' },
+
+        // ENTRANCE (0% - 30%) - Image from left, text from right
+        scrollTl.fromTo(
+          imageRef.current,
+          { x: '-60vw', opacity: 0 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0
+        );
+
+        scrollTl.fromTo(
+          headlineRef.current,
+          { x: '50vw', opacity: 0 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0.05
+        );
+
+        scrollTl.fromTo(
+          bodyRef.current,
+          { y: '6vh', opacity: 0 },
+          { y: 0, opacity: 1, ease: 'none' },
           0.1
         );
-      }
 
-      scrollTl.fromTo(
-        accentPillRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, ease: 'none', transformOrigin: 'right center' },
-        0.15
-      );
+        const categoryItems = categoriesRef.current?.querySelectorAll('li');
+        if (categoryItems) {
+          scrollTl.fromTo(
+            categoryItems,
+            { y: '8vh', opacity: 0 },
+            { y: 0, opacity: 1, ease: 'none', stagger: 0.02 },
+            0.12
+          );
+        }
 
-      // SETTLE (30% - 70%) - static
+        if (arcRef.current) {
+          const arcLength = arcRef.current.getTotalLength();
+          gsap.set(arcRef.current, {
+            strokeDasharray: arcLength,
+            strokeDashoffset: arcLength,
+          });
+          scrollTl.to(
+            arcRef.current,
+            { strokeDashoffset: 0, opacity: 1, ease: 'none' },
+            0.1
+          );
+        }
 
-      // EXIT (70% - 100%)
-      scrollTl.fromTo(
-        imageRef.current,
-        { x: 0, opacity: 1 },
-        { x: '-10vw', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
-      scrollTl.fromTo(
-        [headlineRef.current, bodyRef.current, categoriesRef.current],
-        { opacity: 1 },
-        { opacity: 0, ease: 'power2.in', stagger: 0.02 },
-        0.72
-      );
-
-      if (arcRef.current) {
         scrollTl.fromTo(
-          arcRef.current,
+          accentPillRef.current,
+          { scaleX: 0 },
+          { scaleX: 1, ease: 'none', transformOrigin: 'right center' },
+          0.15
+        );
+
+        // SETTLE (30% - 70%) - static
+
+        // EXIT (70% - 100%)
+        scrollTl.fromTo(
+          imageRef.current,
           { x: 0, opacity: 1 },
-          { x: '-6vw', opacity: 0, ease: 'power2.in' },
+          { x: '-10vw', opacity: 0, ease: 'power2.in' },
+          0.7
+        );
+
+        scrollTl.fromTo(
+          [headlineRef.current, bodyRef.current, categoriesRef.current],
+          { opacity: 1 },
+          { opacity: 0, ease: 'power2.in', stagger: 0.02 },
           0.72
         );
+
+        if (arcRef.current) {
+          scrollTl.fromTo(
+            arcRef.current,
+            { x: 0, opacity: 1 },
+            { x: '-6vw', opacity: 0, ease: 'power2.in' },
+            0.72
+          );
+        }
+
+        scrollTl.fromTo(
+          accentPillRef.current,
+          { opacity: 1 },
+          { opacity: 0, ease: 'power2.in' },
+          0.8
+        );
+      } else {
+        // Simple mobile fade-up
+        gsap.fromTo(
+          section,
+          { y: 30, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
+          }
+        );
       }
-
-      scrollTl.fromTo(
-        accentPillRef.current,
-        { opacity: 1 },
-        { opacity: 0, ease: 'power2.in' },
-        0.8
-      );
-
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [isDesktop]);
 
-  return (
+  return isDesktop ? (
     <section
       ref={sectionRef}
       className="section-pinned bg-bizbrew-charcoal z-[70]"
@@ -220,6 +233,47 @@ export default function TechStack() {
         ref={accentPillRef}
         className="absolute right-[6vw] bottom-[10vh] w-[10vw] h-[3.5vh] amber-pill"
       />
+    </section>
+  ) : (
+    <section
+      ref={sectionRef}
+      className="section-flowing bg-bizbrew-charcoal px-6 py-16"
+    >
+      {/* Headline */}
+      <h2 className="font-display font-bold text-[clamp(36px,8vw,56px)] leading-[1.05] text-bizbrew-offwhite mb-6">
+        Tech <span className="text-bizbrew-amber">Stack</span>
+      </h2>
+
+      {/* Image */}
+      <div className="w-full aspect-[4/3] rounded-[24px] overflow-hidden mb-6">
+        <img
+          src="/stack_tools.jpg"
+          alt="Barista tools"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Body Copy */}
+      <p className="text-lg text-bizbrew-text-secondary leading-relaxed mb-6">
+        Proven, modern tools—chosen for the problem, not the hype.
+      </p>
+
+      {/* Categories List */}
+      <ul className="space-y-3">
+        {categories.map((category, index) => (
+          <li
+            key={index}
+            className="flex items-baseline gap-4 py-2"
+          >
+            <span className="font-mono text-sm text-bizbrew-amber w-24 shrink-0">
+              {category.name}
+            </span>
+            <span className="text-bizbrew-offwhite">
+              {category.tools}
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
