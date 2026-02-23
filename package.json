@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "dev:api": "npx wrangler pages dev dist --d1=DB --r2=R2 --port=8788",
     "seed": "node scripts/seed-d1.mjs && npx wrangler d1 execute bizbrew-db --file=scripts/seed.sql",
+    "generate:blog-seo": "node scripts/generate-blog-seo.mjs",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name=bizbrew-website --branch=production"
   },
   "dependencies": {

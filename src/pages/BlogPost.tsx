@@ -1,4 +1,4 @@
-import { getBlogPostBySlug, blogPosts, type ContentBlock } from '@/data/blog';
+import { getPostBySlug, allBlogPosts, type ContentBlock } from '@/data/blog-all';
 import SEO from '@/components/SEO';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Clock, Calendar, User } from 'lucide-react';
@@ -97,7 +97,7 @@ function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const post = slug ? getBlogPostBySlug(slug) : undefined;
+  const post = slug ? getPostBySlug(slug) : undefined;
 
   // Reset scroll on mount
   useLayoutEffect(() => {
@@ -131,8 +131,14 @@ export default function BlogPost() {
     );
   }
 
-  const relatedPosts = blogPosts
+  const relatedPosts = allBlogPosts
     .filter((p) => p.slug !== post.slug)
+    .sort((a, b) => {
+      const aShared = a.tags.filter((t) => post.tags.includes(t)).length;
+      const bShared = b.tags.filter((t) => post.tags.includes(t)).length;
+      if (bShared !== aShared) return bShared - aShared;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
     .slice(0, 2);
 
   const articleJsonLd = {

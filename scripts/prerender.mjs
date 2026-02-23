@@ -1,16 +1,22 @@
 /**
  * Prerenders all routes to static HTML for SEO.
  * Run after: npm run build && vite build --config vite.ssr.config.ts
+ *
+ * Loads generated blog SEO routes from src/data/blog-seo-routes.json
+ * and renders all routes in parallel batches.
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, '..', 'dist');
+const srcDir = join(__dirname, '..', 'src', 'data');
 const SITE_URL = 'https://bizbrew.de';
+const BATCH_SIZE = 10; // Concurrent renders per batch
 
-const routes = [
+// ---------- Static routes (manually maintained) ----------
+const coreRoutes = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },
   { path: '/services/custom-software', priority: 0.9, changefreq: 'monthly' },
   { path: '/services/saas-products', priority: 0.9, changefreq: 'monthly' },
@@ -81,6 +87,20 @@ const routes = [
   { path: '/terms', priority: 0.3, changefreq: 'yearly' },
 ];
 
+// ---------- Load generated blog SEO routes ----------
+let blogSeoRoutes = [];
+const seoRoutesPath = join(srcDir, 'blog-seo-routes.json');
+if (existsSync(seoRoutesPath)) {
+  blogSeoRoutes = JSON.parse(readFileSync(seoRoutesPath, 'utf-8'));
+  console.log(`Loaded ${blogSeoRoutes.length} blog SEO routes`);
+} else {
+  console.warn('Warning: blog-seo-routes.json not found. Run npm run generate:blog-seo first.');
+}
+
+// Merge all routes
+const allRoutes = [...coreRoutes, ...blogSeoRoutes];
+
+// ---------- Route metadata for meta tag injection ----------
 const routeMeta = {
   '/services/custom-software': {
     title: 'Custom Software | BizBrew',
@@ -164,245 +184,65 @@ const routeMeta = {
     title: 'Projects | BizBrew',
     description: 'Explore 46 production projects spanning e-commerce, healthcare, education, fintech, and more. Real software built for real businesses.',
   },
-  '/projects/wayvida': {
-    title: 'Wayvida — E-Learning Platform | BizBrew',
-    description: 'Comprehensive e-learning platform with live classes, video lessons, mock tests, and study plans — built for scale with a microservice backend.',
-    image: '/project_education.jpg',
-  },
-  '/projects/neyyar-production': {
-    title: 'Neyyar Production — OTT Streaming | BizBrew',
-    description: 'Over-the-top streaming platform for movies and series, powered by a microservice architecture for high-availability content delivery.',
-    image: '/project_management.jpg',
-  },
-  '/projects/neyyar-hr': {
-    title: 'Neyyar HR — HR & Project Management | BizBrew',
-    description: 'End-to-end HR and project management platform covering employee lifecycle, attendance, payroll, and task tracking.',
-    image: '/project_hr.jpg',
-  },
-  '/projects/diq-ecommerce': {
-    title: 'DIQ E-Commerce Platform | BizBrew',
-    description: 'White-label e-commerce product powering multiple brands across Qatar and the Middle East — mobile apps and responsive web storefronts.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/school-management-system': {
-    title: 'School Management System | BizBrew',
-    description: 'White-label school management product handling students, teachers, attendance, exams, fees, and parent communications.',
-    image: '/project_education.jpg',
-  },
-  '/projects/hospital-management-system': {
-    title: 'Hospital Management System | BizBrew',
-    description: 'Product for hospital and clinic management including patient records, appointments, doctor schedules, and billing integration.',
-    image: '/project_healthcare.jpg',
-  },
-  '/projects/billing-pos-system': {
-    title: 'Billing & POS System | BizBrew',
-    description: 'Point-of-sale and billing product for retail and service businesses — invoices, receipts, sales analytics, and tax configuration.',
-    image: '/project_restaurant.jpg',
-  },
-  '/projects/car-rental-system': {
-    title: 'Car Rental System | BizBrew',
-    description: 'Car rental platform for fleet management, booking, scheduling, and rental contract generation.',
-    image: '/project_transport.jpg',
-  },
-  '/projects/gym-fitness-management': {
-    title: 'Gym & Fitness Management | BizBrew',
-    description: 'Management system for gyms and fitness centers — member profiles, subscription plans, attendance tracking, and payment processing.',
-    image: '/project_sports.jpg',
-  },
-  '/projects/connect-app-emplog': {
-    title: 'Connect App / EmpLog — Attendance Suite | BizBrew',
-    description: 'Enterprise attendance and time-logging suite with geolocation, biometric/QR check-in, and project-wise timesheets.',
-    image: '/project_hr.jpg',
-  },
-  '/projects/qtamween': {
-    title: 'QTamween — E-Commerce | BizBrew',
-    description: 'E-commerce app for product ordering with delivery tracking and order management — serving the Qatar market.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/qvender': {
-    title: 'QVender — Vendor Marketplace | BizBrew',
-    description: 'Vendor-driven e-commerce platform connecting buyers with local sellers in Qatar.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/mazad-qatar': {
-    title: 'Mazad Qatar — Classifieds | BizBrew',
-    description: 'Classified marketplace app for listing and browsing items in Qatar — with search, filters, favorites, and direct messaging.',
-    image: '/project_classifieds.jpg',
-  },
-  '/projects/flower-markets': {
-    title: 'Flower Markets — E-Commerce | BizBrew',
-    description: 'Flower and gift ordering app with custom arrangements, delivery scheduling, and occasion-based browsing.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/bab-al-rayyan': {
-    title: 'Bab Al Rayyan Group | BizBrew',
-    description: 'Combined management, e-commerce, and restaurant ordering platform for a multi-brand business group in Qatar.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/360-furnitures': {
-    title: '360 Furnitures — E-Commerce | BizBrew',
-    description: 'Furniture e-commerce app with detailed product pages, high-resolution imagery, and a streamlined purchase flow.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/stores-in-qatar': {
-    title: 'Stores in Qatar — Marketplace | BizBrew',
-    description: 'Multi-vendor e-commerce app aggregating multiple stores and their product catalogs into a single shopping experience.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/gold-market': {
-    title: 'Gold Market — Jewellery E-Commerce | BizBrew',
-    description: 'Jewellery and gold product e-commerce app with detailed product listings and a secure checkout flow.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/aada-kada': {
-    title: 'Aada Kada — E-Commerce | BizBrew',
-    description: 'General-purpose e-commerce app for the Qatar market with product browsing, cart, and order management.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/hayak': {
-    title: 'Hayak — E-Commerce | BizBrew',
-    description: 'E-commerce app tailored for local customers in Qatar — browse products, place orders, and track delivery.',
-    image: '/project_ecommerce.jpg',
-  },
-  '/projects/qasports': {
-    title: 'QASports — Sports Booking | BizBrew',
-    description: 'Sports booking platform for managing events, facility reservations, and user profiles in Qatar.',
-    image: '/project_sports.jpg',
-  },
-  '/projects/au-sports': {
-    title: 'AU Sports — Events & Booking | BizBrew',
-    description: 'Sports events and booking app for managing sports activities, registrations, and notifications.',
-    image: '/project_sports.jpg',
-  },
-  '/projects/evo-sports': {
-    title: 'Evo Sports — Coaching Booking | BizBrew',
-    description: 'Coaching booking app for sports training — browse coaches, book sessions, and track progress.',
-    image: '/project_sports.jpg',
-  },
-  '/projects/limitless': {
-    title: 'Limitless — Sports & Events | BizBrew',
-    description: 'Sports and events booking app for discovering activities, reserving spots, and managing bookings.',
-    image: '/project_sports.jpg',
-  },
-  '/projects/turismo': {
-    title: 'Turismo — Travel & Tourism | BizBrew',
-    description: 'Tours and events booking app for tourism experiences — browse packages, book trips, and view itineraries.',
-    image: '/project_booking.jpg',
-  },
-  '/projects/q-tables': {
-    title: 'Q Tables — Restaurant Reservations | BizBrew',
-    description: 'Restaurant table reservation app — browse venues, select time slots, and manage bookings in Qatar.',
-    image: '/project_booking.jpg',
-  },
-  '/projects/salwa-beach-hilton': {
-    title: 'Salwa Beach Hilton — Restaurant App | BizBrew',
-    description: 'Restaurant app for Salwa Beach Hilton resort — menu browsing, table booking, and in-venue ordering.',
-    image: '/project_restaurant.jpg',
-  },
-  '/projects/secc-employee': {
-    title: 'SECC Employee App | BizBrew',
-    description: 'Employee management app for SECC — profiles, attendance tracking, and core HR workflows.',
-    image: '/project_hr.jpg',
-  },
-  '/projects/al-khor-sports-club': {
-    title: 'Al Khor Sports Club — Employee App | BizBrew',
-    description: 'Employee management app for Al Khor Sports Club — staff records, attendance, and basic HR workflows.',
-    image: '/project_hr.jpg',
-  },
-  '/projects/clubsys': {
-    title: 'ClubSys — Employee Management | BizBrew',
-    description: 'Employee management solution for clubs and organizations — profiles, attendance, and role-based access.',
-    image: '/project_hr.jpg',
-  },
-  '/projects/alnoor': {
-    title: 'Alnoor Management | BizBrew',
-    description: 'Operations and staff management app for Alnoor — handling staff records, HR flows, and daily operations.',
-    image: '/project_management.jpg',
-  },
-  '/projects/smdc-elearning': {
-    title: 'SMDC E-Learning | BizBrew',
-    description: 'E-learning app with structured content delivery, quizzes, and student progress tracking.',
-    image: '/project_education.jpg',
-  },
-  '/projects/wondered': {
-    title: 'WonderEd — Kids E-Learning | BizBrew',
-    description: 'Interactive e-learning app for children — lessons, quizzes, and progress tracking with an engaging, kid-friendly interface.',
-    image: '/project_education.jpg',
-  },
-  '/projects/educate': {
-    title: 'Educate — Education App | BizBrew',
-    description: 'Education app providing learning content, user management, and basic assessment capabilities.',
-    image: '/project_education.jpg',
-  },
-  '/projects/qgmd-stock': {
-    title: 'QGMD Stock Management | BizBrew',
-    description: 'Stock and inventory management app for QGMD — tracking stock levels, movements, and generating reports.',
-    image: '/project_inventory.jpg',
-  },
-  '/projects/moder-recycling': {
-    title: 'Moder Recycling Factory — Booking | BizBrew',
-    description: 'Appointment booking app for Moder Recycling Factory — schedule visits, select time slots, and receive confirmations.',
-    image: '/project_booking.jpg',
-  },
-  '/projects/elite-recycling': {
-    title: 'Elite Recycling — Booking | BizBrew',
-    description: 'Appointment booking app for Elite Recycling — manage bookings, time slots, and customer communications.',
-    image: '/project_booking.jpg',
-  },
-  '/projects/qbc-booking': {
-    title: 'QBC Appointments | BizBrew',
-    description: 'Appointment booking solution for QBC — schedule visits, manage time slots, and receive notifications.',
-    image: '/project_booking.jpg',
-  },
-  '/projects/smaricar': {
-    title: 'Smaricar — Community Transport | BizBrew',
-    description: 'Community transport app for church taxi booking — ride requests, pickup/drop locations, and status tracking.',
-    image: '/project_transport.jpg',
-  },
-  '/projects/fintech-app': {
-    title: 'Fintech Dashboard | BizBrew',
-    description: 'Financial application for managing accounts, viewing transactions, and accessing financial dashboards.',
-    image: '/project_fintech.jpg',
-  },
-  '/projects/thahab': {
-    title: 'Thahab — Live Auction | BizBrew',
-    description: 'Live auction app with real-time bidding — join auctions, place bids, and track bid history.',
-    image: '/project_auction.jpg',
-  },
-  '/projects/analyzer': {
-    title: 'Analyzer — Real Estate | BizBrew',
-    description: 'Real estate app for listing, browsing, and analyzing properties with map integration and advanced filters.',
-    image: '/project_realestate.jpg',
-  },
-  '/projects/gulf-psychology': {
-    title: 'Gulf Psychology | BizBrew',
-    description: 'App for Gulf Psychology providing service information, practitioner profiles, and appointment booking.',
-    image: '/project_healthcare.jpg',
-  },
-  '/projects/tylos-pharmacy': {
-    title: 'Tylos Pharmacy Group | BizBrew',
-    description: 'Pharmacy app for browsing products, searching medications, and placing orders or inquiries.',
-    image: '/project_healthcare.jpg',
-  },
-  '/projects/qhr-job-portal': {
-    title: 'QHR Job Portal | BizBrew',
-    description: 'Job portal app connecting employers and job seekers — post vacancies, search jobs, and manage applications.',
-    image: '/project_jobs.jpg',
-  },
-  '/projects/top-jobs-in': {
-    title: 'Top Jobs In | BizBrew',
-    description: 'Job portal app for browsing vacancies, submitting applications, and tracking hiring progress.',
-    image: '/project_jobs.jpg',
-  },
-  '/privacy': {
-    title: 'Privacy Policy | BizBrew',
-    description: 'BizBrew privacy policy. How we collect, use, and protect your personal information.',
-  },
-  '/terms': {
-    title: 'Terms of Service | BizBrew',
-    description: 'BizBrew terms of service. Terms and conditions governing the use of our website and services.',
-  },
+  '/projects/wayvida': { title: 'Wayvida — E-Learning Platform | BizBrew', description: 'Comprehensive e-learning platform with live classes, video lessons, mock tests, and study plans — built for scale with a microservice backend.', image: '/project_education.jpg' },
+  '/projects/neyyar-production': { title: 'Neyyar Production — OTT Streaming | BizBrew', description: 'Over-the-top streaming platform for movies and series, powered by a microservice architecture for high-availability content delivery.', image: '/project_management.jpg' },
+  '/projects/neyyar-hr': { title: 'Neyyar HR — HR & Project Management | BizBrew', description: 'End-to-end HR and project management platform covering employee lifecycle, attendance, payroll, and task tracking.', image: '/project_hr.jpg' },
+  '/projects/diq-ecommerce': { title: 'DIQ E-Commerce Platform | BizBrew', description: 'White-label e-commerce product powering multiple brands across Qatar and the Middle East — mobile apps and responsive web storefronts.', image: '/project_ecommerce.jpg' },
+  '/projects/school-management-system': { title: 'School Management System | BizBrew', description: 'White-label school management product handling students, teachers, attendance, exams, fees, and parent communications.', image: '/project_education.jpg' },
+  '/projects/hospital-management-system': { title: 'Hospital Management System | BizBrew', description: 'Product for hospital and clinic management including patient records, appointments, doctor schedules, and billing integration.', image: '/project_healthcare.jpg' },
+  '/projects/billing-pos-system': { title: 'Billing & POS System | BizBrew', description: 'Point-of-sale and billing product for retail and service businesses — invoices, receipts, sales analytics, and tax configuration.', image: '/project_restaurant.jpg' },
+  '/projects/car-rental-system': { title: 'Car Rental System | BizBrew', description: 'Car rental platform for fleet management, booking, scheduling, and rental contract generation.', image: '/project_transport.jpg' },
+  '/projects/gym-fitness-management': { title: 'Gym & Fitness Management | BizBrew', description: 'Management system for gyms and fitness centers — member profiles, subscription plans, attendance tracking, and payment processing.', image: '/project_sports.jpg' },
+  '/projects/connect-app-emplog': { title: 'Connect App / EmpLog — Attendance Suite | BizBrew', description: 'Enterprise attendance and time-logging suite with geolocation, biometric/QR check-in, and project-wise timesheets.', image: '/project_hr.jpg' },
+  '/projects/qtamween': { title: 'QTamween — E-Commerce | BizBrew', description: 'E-commerce app for product ordering with delivery tracking and order management — serving the Qatar market.', image: '/project_ecommerce.jpg' },
+  '/projects/qvender': { title: 'QVender — Vendor Marketplace | BizBrew', description: 'Vendor-driven e-commerce platform connecting buyers with local sellers in Qatar.', image: '/project_ecommerce.jpg' },
+  '/projects/mazad-qatar': { title: 'Mazad Qatar — Classifieds | BizBrew', description: 'Classified marketplace app for listing and browsing items in Qatar — with search, filters, favorites, and direct messaging.', image: '/project_classifieds.jpg' },
+  '/projects/flower-markets': { title: 'Flower Markets — E-Commerce | BizBrew', description: 'Flower and gift ordering app with custom arrangements, delivery scheduling, and occasion-based browsing.', image: '/project_ecommerce.jpg' },
+  '/projects/bab-al-rayyan': { title: 'Bab Al Rayyan Group | BizBrew', description: 'Combined management, e-commerce, and restaurant ordering platform for a multi-brand business group in Qatar.', image: '/project_ecommerce.jpg' },
+  '/projects/360-furnitures': { title: '360 Furnitures — E-Commerce | BizBrew', description: 'Furniture e-commerce app with detailed product pages, high-resolution imagery, and a streamlined purchase flow.', image: '/project_ecommerce.jpg' },
+  '/projects/stores-in-qatar': { title: 'Stores in Qatar — Marketplace | BizBrew', description: 'Multi-vendor e-commerce app aggregating multiple stores and their product catalogs into a single shopping experience.', image: '/project_ecommerce.jpg' },
+  '/projects/gold-market': { title: 'Gold Market — Jewellery E-Commerce | BizBrew', description: 'Jewellery and gold product e-commerce app with detailed product listings and a secure checkout flow.', image: '/project_ecommerce.jpg' },
+  '/projects/aada-kada': { title: 'Aada Kada — E-Commerce | BizBrew', description: 'General-purpose e-commerce app for the Qatar market with product browsing, cart, and order management.', image: '/project_ecommerce.jpg' },
+  '/projects/hayak': { title: 'Hayak — E-Commerce | BizBrew', description: 'E-commerce app tailored for local customers in Qatar — browse products, place orders, and track delivery.', image: '/project_ecommerce.jpg' },
+  '/projects/qasports': { title: 'QASports — Sports Booking | BizBrew', description: 'Sports booking platform for managing events, facility reservations, and user profiles in Qatar.', image: '/project_sports.jpg' },
+  '/projects/au-sports': { title: 'AU Sports — Events & Booking | BizBrew', description: 'Sports events and booking app for managing sports activities, registrations, and notifications.', image: '/project_sports.jpg' },
+  '/projects/evo-sports': { title: 'Evo Sports — Coaching Booking | BizBrew', description: 'Coaching booking app for sports training — browse coaches, book sessions, and track progress.', image: '/project_sports.jpg' },
+  '/projects/limitless': { title: 'Limitless — Sports & Events | BizBrew', description: 'Sports and events booking app for discovering activities, reserving spots, and managing bookings.', image: '/project_sports.jpg' },
+  '/projects/turismo': { title: 'Turismo — Travel & Tourism | BizBrew', description: 'Tours and events booking app for tourism experiences — browse packages, book trips, and view itineraries.', image: '/project_booking.jpg' },
+  '/projects/q-tables': { title: 'Q Tables — Restaurant Reservations | BizBrew', description: 'Restaurant table reservation app — browse venues, select time slots, and manage bookings in Qatar.', image: '/project_booking.jpg' },
+  '/projects/salwa-beach-hilton': { title: 'Salwa Beach Hilton — Restaurant App | BizBrew', description: 'Restaurant app for Salwa Beach Hilton resort — menu browsing, table booking, and in-venue ordering.', image: '/project_restaurant.jpg' },
+  '/projects/secc-employee': { title: 'SECC Employee App | BizBrew', description: 'Employee management app for SECC — profiles, attendance tracking, and core HR workflows.', image: '/project_hr.jpg' },
+  '/projects/al-khor-sports-club': { title: 'Al Khor Sports Club — Employee App | BizBrew', description: 'Employee management app for Al Khor Sports Club — staff records, attendance, and basic HR workflows.', image: '/project_hr.jpg' },
+  '/projects/clubsys': { title: 'ClubSys — Employee Management | BizBrew', description: 'Employee management solution for clubs and organizations — profiles, attendance, and role-based access.', image: '/project_hr.jpg' },
+  '/projects/alnoor': { title: 'Alnoor Management | BizBrew', description: 'Operations and staff management app for Alnoor — handling staff records, HR flows, and daily operations.', image: '/project_management.jpg' },
+  '/projects/smdc-elearning': { title: 'SMDC E-Learning | BizBrew', description: 'E-learning app with structured content delivery, quizzes, and student progress tracking.', image: '/project_education.jpg' },
+  '/projects/wondered': { title: 'WonderEd — Kids E-Learning | BizBrew', description: 'Interactive e-learning app for children — lessons, quizzes, and progress tracking with an engaging, kid-friendly interface.', image: '/project_education.jpg' },
+  '/projects/educate': { title: 'Educate — Education App | BizBrew', description: 'Education app providing learning content, user management, and basic assessment capabilities.', image: '/project_education.jpg' },
+  '/projects/qgmd-stock': { title: 'QGMD Stock Management | BizBrew', description: 'Stock and inventory management app for QGMD — tracking stock levels, movements, and generating reports.', image: '/project_inventory.jpg' },
+  '/projects/moder-recycling': { title: 'Moder Recycling Factory — Booking | BizBrew', description: 'Appointment booking app for Moder Recycling Factory — schedule visits, select time slots, and receive confirmations.', image: '/project_booking.jpg' },
+  '/projects/elite-recycling': { title: 'Elite Recycling — Booking | BizBrew', description: 'Appointment booking app for Elite Recycling — manage bookings, time slots, and customer communications.', image: '/project_booking.jpg' },
+  '/projects/qbc-booking': { title: 'QBC Appointments | BizBrew', description: 'Appointment booking solution for QBC — schedule visits, manage time slots, and receive notifications.', image: '/project_booking.jpg' },
+  '/projects/smaricar': { title: 'Smaricar — Community Transport | BizBrew', description: 'Community transport app for church taxi booking — ride requests, pickup/drop locations, and status tracking.', image: '/project_transport.jpg' },
+  '/projects/fintech-app': { title: 'Fintech Dashboard | BizBrew', description: 'Financial application for managing accounts, viewing transactions, and accessing financial dashboards.', image: '/project_fintech.jpg' },
+  '/projects/thahab': { title: 'Thahab — Live Auction | BizBrew', description: 'Live auction app with real-time bidding — join auctions, place bids, and track bid history.', image: '/project_auction.jpg' },
+  '/projects/analyzer': { title: 'Analyzer — Real Estate | BizBrew', description: 'Real estate app for listing, browsing, and analyzing properties with map integration and advanced filters.', image: '/project_realestate.jpg' },
+  '/projects/gulf-psychology': { title: 'Gulf Psychology | BizBrew', description: 'App for Gulf Psychology providing service information, practitioner profiles, and appointment booking.', image: '/project_healthcare.jpg' },
+  '/projects/tylos-pharmacy': { title: 'Tylos Pharmacy Group | BizBrew', description: 'Pharmacy app for browsing products, searching medications, and placing orders or inquiries.', image: '/project_healthcare.jpg' },
+  '/projects/qhr-job-portal': { title: 'QHR Job Portal | BizBrew', description: 'Job portal app connecting employers and job seekers — post vacancies, search jobs, and manage applications.', image: '/project_jobs.jpg' },
+  '/projects/top-jobs-in': { title: 'Top Jobs In | BizBrew', description: 'Job portal app for browsing vacancies, submitting applications, and tracking hiring progress.', image: '/project_jobs.jpg' },
+  '/privacy': { title: 'Privacy Policy | BizBrew', description: 'BizBrew privacy policy. How we collect, use, and protect your personal information.' },
+  '/terms': { title: 'Terms of Service | BizBrew', description: 'BizBrew terms of service. Terms and conditions governing the use of our website and services.' },
 };
+
+// Add blog SEO routes to routeMeta dynamically
+for (const route of blogSeoRoutes) {
+  if (!routeMeta[route.path]) {
+    routeMeta[route.path] = {
+      title: route.title,
+      description: route.description,
+    };
+  }
+}
 
 function injectMeta(html, route) {
   const meta = routeMeta[route];
@@ -445,9 +285,9 @@ function injectMeta(html, route) {
   return result;
 }
 
-function generateSitemap() {
+function generateSitemapUrls(routes) {
   const today = new Date().toISOString().split('T')[0];
-  const urls = routes.map(
+  return routes.map(
     (r) => `  <url>
     <loc>${SITE_URL}${r.path}</loc>
     <lastmod>${today}</lastmod>
@@ -455,40 +295,93 @@ function generateSitemap() {
     <priority>${r.priority}</priority>
   </url>`
   );
+}
 
+function generateSitemapXml(urls) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}
 </urlset>`;
 }
 
+function generateSitemapIndex() {
+  const today = new Date().toISOString().split('T')[0];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-main.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-blog-seo.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+</sitemapindex>`;
+}
+
+async function renderRoute(render, template, route) {
+  const html = render(route.path);
+  let fullHtml = template.replace(
+    '<div id="root"></div>',
+    `<div id="root">${html}</div>`
+  );
+
+  fullHtml = injectMeta(fullHtml, route.path);
+
+  const outputPath =
+    route.path === '/'
+      ? join(distDir, 'index.html')
+      : join(distDir, route.path, 'index.html');
+
+  mkdirSync(dirname(outputPath), { recursive: true });
+  writeFileSync(outputPath, fullHtml);
+  return route.path;
+}
+
 async function main() {
   const { render } = await import(join(distDir, 'entry-server.js'));
   const template = readFileSync(join(distDir, 'index.html'), 'utf-8');
 
-  for (const route of routes) {
-    const html = render(route.path);
-    let fullHtml = template.replace(
-      '<div id="root"></div>',
-      `<div id="root">${html}</div>`
+  console.log(`Prerendering ${allRoutes.length} routes (batch size: ${BATCH_SIZE})...`);
+  const startTime = Date.now();
+
+  // Render in batches
+  let rendered = 0;
+  for (let i = 0; i < allRoutes.length; i += BATCH_SIZE) {
+    const batch = allRoutes.slice(i, i + BATCH_SIZE);
+    const results = await Promise.all(
+      batch.map((route) => renderRoute(render, template, route))
     );
-
-    fullHtml = injectMeta(fullHtml, route.path);
-
-    const outputPath =
-      route.path === '/'
-        ? join(distDir, 'index.html')
-        : join(distDir, route.path, 'index.html');
-
-    mkdirSync(dirname(outputPath), { recursive: true });
-    writeFileSync(outputPath, fullHtml);
-    console.log(`Prerendered: ${route.path}`);
+    rendered += results.length;
+    // Log progress every 100 routes
+    if (rendered % 100 < BATCH_SIZE) {
+      console.log(`  Prerendered ${rendered}/${allRoutes.length} routes...`);
+    }
   }
 
-  // Generate sitemap
-  const sitemap = generateSitemap();
-  writeFileSync(join(distDir, 'sitemap.xml'), sitemap);
-  console.log('Generated: sitemap.xml');
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+  console.log(`Prerendered all ${rendered} routes in ${elapsed}s`);
+
+  // Generate sitemaps
+  if (blogSeoRoutes.length > 0) {
+    // Sitemap index approach: main + blog-seo
+    const mainUrls = generateSitemapUrls(coreRoutes);
+    const blogSeoUrls = generateSitemapUrls(blogSeoRoutes);
+
+    writeFileSync(join(distDir, 'sitemap-main.xml'), generateSitemapXml(mainUrls));
+    console.log(`Generated: sitemap-main.xml (${coreRoutes.length} URLs)`);
+
+    writeFileSync(join(distDir, 'sitemap-blog-seo.xml'), generateSitemapXml(blogSeoUrls));
+    console.log(`Generated: sitemap-blog-seo.xml (${blogSeoRoutes.length} URLs)`);
+
+    writeFileSync(join(distDir, 'sitemap.xml'), generateSitemapIndex());
+    console.log('Generated: sitemap.xml (index)');
+  } else {
+    // Fallback: single sitemap
+    const allUrls = generateSitemapUrls(allRoutes);
+    writeFileSync(join(distDir, 'sitemap.xml'), generateSitemapXml(allUrls));
+    console.log(`Generated: sitemap.xml (${allRoutes.length} URLs)`);
+  }
 }
 
 main().catch((err) => {
